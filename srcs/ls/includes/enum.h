@@ -1,0 +1,10 @@
+#pragma once
+
+// #define ANSI_COLOR_BLUE  "\x1b[34m"
+// #define ANSI_COLOR_WHITE "\x1b[37m"
+// #define ANSI_COLOR_GREEN "\x1b[32m"
+// #define ANSI_COLOR_RESET "\x1b[0m"
+
+// #define DIRECTORY ANSI_COLOR_BLUE "DIRECTORY" ANSI_COLOR_RESET
+// #define FILE ANSI_COLOR_WHITE "FILE" ANSI_COLOR_RESET
+// #define EXE ANSI_COLOR_GREEN "EXE" ANSI_COLOR_RESET

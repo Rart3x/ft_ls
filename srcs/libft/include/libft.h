@@ -16,6 +16,8 @@ typedef enum e_bool
 typedef struct s_list
 {
 	void			*content;
+	unsigned char	type;
+
 	struct s_list	*next;
 }	t_list;
 
