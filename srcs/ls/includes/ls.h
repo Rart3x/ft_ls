@@ -1,77 +1,85 @@
 #pragma once
 
-#include "../../libft/include/libft.h"
+/*---------------------------Libft includes---------------------------*/
+    #include "../../libft/include/libft.h"
 
-#include "enum.h"
-#include "errors.h"
+/*---------------------------.h includes---------------------------*/
+    #include "enum.h"
+    #include "errors.h"
 
-#include <dirent.h>
-#include <grp.h>
-#include <pwd.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <sys/xattr.h>
-#include <time.h>
-#include <unistd.h>
+/*---------------------------Libs includes---------------------------*/
+    #include <dirent.h>
+    #include <grp.h>
+    #include <pwd.h>
+    #include <stdbool.h>
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    #include <sys/stat.h>
+    #include <sys/types.h>
+    #include <sys/xattr.h>
+    #include <time.h>
+    #include <unistd.h>
 
-typedef struct t_arr { 
-    char *str;
+/*---------------------------Structs---------------------------*/
+    typedef struct t_arr { 
+        char *str;
 
-    unsigned char type;
-    
-    bool executable;
-    bool readable;
-    bool writable;
-    
-}   s_arr;
+        unsigned char type;
+        
+        bool executable;
+        bool readable;
+        bool writable;
 
-typedef struct t_args {
-    char **arr;
+    }   s_arr;
 
-}   s_args;
+    typedef struct t_args {
+        char **arr;
 
-typedef struct t_dirs {
-    s_arr   *arr;
-    char    *directory;
+    }   s_args;
 
-    size_t capacity;
-    size_t size;
+    typedef struct t_dirs {
+        s_arr   *arr;
+        char    *directory;
 
-    struct t_dirs *next;
+        size_t capacity;
+        size_t size;
 
-}   s_dirs;
+        struct t_dirs *next;
 
-typedef struct t_flags {
-    bool a;
-    bool l;
-    bool r;
-    bool R;
-    bool t;
+    }   s_dirs;
 
-}   s_flags;
+    typedef struct t_flags {
+        bool a;
+        bool l;
+        bool r;
+        bool R;
+        bool t;
 
-typedef struct t_vars {
-    s_args  args;
-    s_dirs  dirs;
-    s_flags flags;
+    }   s_flags;
 
-}   s_vars;
+    typedef struct t_vars {
+        s_args  args;
+        s_dirs  *dirs;
+        s_flags flags;
 
-char    **init_args(char **args, int ac, char **av);
-s_dirs  *init_dirs(const char *directory);
+    }   s_vars;
 
-void    init_struc_arr(s_arr *arr);
-void    init_struc_args(s_args *args);
-void    init_struc_dirs(s_dirs *dirs);
-void    init_struc_flags(s_flags *flags);
-void    init_structs(s_vars *vars);
+/*---------------------------Functions---------------------------*/
 
+    /*---------------------------Init Functions---------------------------*/
+        char    **init_args(char **args, int ac, char **av);
+        void    init_dirs(s_dirs *dirs, const char *directory);
 
-void    without_args(s_vars *vars);
-// void    with_args(s_vars *vars);
+        void    init_struc_arr(s_arr *arr);
+        void    init_struc_args(s_args *args);
+        void    init_struc_dirs(s_dirs *dirs);
+        void    init_struc_flags(s_flags *flags);
+        void    init_structs(s_vars *vars);
 
-void free_dirs(s_dirs *dirs);
+    /*---------------------------With/Without arguments functions---------------------------*/
+        void    without_args(s_vars *vars);
+        // void    with_args(s_vars *vars);
+
+    /*---------------------------Clear functions---------------------------*/
+        void free_dirs(s_dirs *dirs);

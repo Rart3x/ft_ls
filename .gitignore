@@ -1,6 +1,8 @@
 *.o
 *.out
 *.swp
+*.swn
+*.swp
+*.json
 
 .obj/
-.vscode/
