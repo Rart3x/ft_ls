@@ -1,9 +1,10 @@
 NAME = ft_ls
 
 SRC_DIR = srcs/ls/functions
+SRC_SUBDIRS := $(shell find $(SRC_DIR) -type d)
 OBJ_DIR = .obj
 
-SRCS := $(wildcard $(SRC_DIR)/*.c)
+SRCS := $(foreach dir,$(SRC_SUBDIRS),$(wildcard $(dir)/*.c))
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 

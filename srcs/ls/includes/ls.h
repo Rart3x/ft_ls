@@ -33,11 +33,6 @@
 
     }   s_arr;
 
-    typedef struct t_args {
-        char **arr;
-
-    }   s_args;
-
     typedef struct t_dirs {
         s_arr   *arr;
         char    *directory;
@@ -59,7 +54,6 @@
     }   s_flags;
 
     typedef struct t_vars {
-        s_args  args;
         s_dirs  *dirs;
         s_flags flags;
 
@@ -72,14 +66,23 @@
         void    init_dirs(s_dirs *dirs, const char *directory);
 
         void    init_struc_arr(s_arr *arr);
-        void    init_struc_args(s_args *args);
         void    init_struc_dirs(s_dirs *dirs);
         void    init_struc_flags(s_flags *flags);
         void    init_structs(s_vars *vars);
 
-    /*---------------------------With/Without arguments functions---------------------------*/
+    /*---------------------------Without arguments functions---------------------------*/
+        /*---------------------------Clear functions---------------------------*/
+            void    free_dirs_wa(s_dirs *dirs);
+        /*---------------------------Print functions---------------------------*/
+            void    print_ls_wa(s_vars *vars);
+        /*---------------------------Sort functions---------------------------*/
         void    without_args(s_vars *vars);
-        // void    with_args(s_vars *vars);
+    /*---------------------------With arguments functions---------------------------*/
+        /*---------------------------Clear functions---------------------------*/
+        /*---------------------------Print functions---------------------------*/
+        /*---------------------------Sort functions---------------------------*/
+        void    with_args(s_vars *vars, int ac, char **av);
 
-    /*---------------------------Clear functions---------------------------*/
-        void free_dirs(s_dirs *dirs);
+    /*---------------------------Utils Functions---------------------------*/
+        bool   add_element(s_dirs *dirs, const char *str, unsigned char type);
+        void   define_file_permissions(s_arr *arr);

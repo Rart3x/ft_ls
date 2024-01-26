@@ -1,6 +1,6 @@
-#include "../includes/ls.h"
+#include "../../includes/ls.h"
 
-void    free_dirs(s_dirs *dirs) {
+void    free_dirs_wa(s_dirs *dirs) {
     if (dirs != NULL) {
         if (dirs->arr != NULL) {
             while (dirs->size > 0) {

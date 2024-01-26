@@ -1,7 +1,6 @@
 #include "../includes/ls.h"
 
 /*---------------------------Random Init---------------------------*/
-
 char    **init_args(char **arr, int ac, char **av) {
     
     arr = malloc(sizeof(char *) * (count_args_2d(av) - 1));
@@ -31,13 +30,11 @@ void   init_dirs(s_dirs *dirs, const char *directory) {
 }
 
 /*---------------------------Structs Init---------------------------*/
-
 void    init_structs(s_vars *vars) {
     vars->dirs = malloc(sizeof(s_dirs));
     if (!vars->dirs)
         exit(0);
 
-    init_struc_args(&vars->args);
     init_struc_dirs(vars->dirs);
     init_struc_flags(&vars->flags);
 }
@@ -48,10 +45,6 @@ void    init_struc_arr(s_arr *arr) {
     arr->executable = false;
     arr->readable = false;
     arr->writable = false;
-}
-
-void    init_struc_args(s_args *args) { 
-    args->arr = NULL;
 }
 
 void    init_struc_dirs(s_dirs *dirs) {

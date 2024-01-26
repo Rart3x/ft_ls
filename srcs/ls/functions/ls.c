@@ -1,58 +1,35 @@
 #include "../includes/ls.h"
 
-bool add_element(s_dirs *dirs, const char *str, unsigned char type) {
-    if (dirs->size == dirs->capacity) {
-        s_arr *new = realloc(dirs->arr, 2 * dirs->capacity * sizeof(s_arr));
-
-        if (new == NULL)
-            return FALSE;
-        
-        dirs->arr = new;
-        dirs->capacity *= 2;
-    }
-
-    dirs->arr[dirs->size].str = ft_strdup(str);
-    dirs->arr[dirs->size].type = type;
-    dirs->size++;
-
-    return TRUE;
-}
-
-void    define_file_permissions(s_arr *arr) {
-    struct stat file_stat;
-
-    stat(arr->str, &file_stat);
-
-    arr->executable = (file_stat.st_mode & S_IXUSR) ? true : false;
-    arr->readable = (file_stat.st_mode & S_IRUSR) ? true : false;
-    arr->writable = (file_stat.st_mode & S_IWUSR) ? true : false;
-}
-
-void    print_ls(s_vars *vars) {
-    // sort_files(vars);
-
-    for (size_t i = 0; i < vars->dirs->size; i++) {
-        switch (vars->dirs->arr[i].type) {
-            case 4:
-                ft_printf(BLUE "%s" RESET, vars->dirs->arr[i].str);
-                break;
-            case 8:
-                switch (vars->dirs->arr[i].executable) {
-                    case true:
-                        ft_printf(GREEN "%s" RESET, vars->dirs->arr[i].str);
+void    with_args(s_vars *vars, int ac, char **av) {
+    for (size_t i = 1; i < (size_t)ac; i++) { 
+        if (av[i][0] == '-') {
+            for (size_t j = 0; j < ft_strlen(av[i]); j++) { 
+                switch (av[i][j]) {
+                    case 'a':
+                        vars->flags.a = true;
                         break;
-                    case false:
-                        ft_printf("%s", vars->dirs->arr[i].str);
+                    case 'l':
+                        vars->flags.l = true;
+                        break;
+                    case 'r':
+                        vars->flags.r = true;
+                        break;
+                    case 'R':
+                        vars->flags.R = true;
+                        break;
+                    case 't':
+                        vars->flags.t = true;
                         break;
                 }
-                break;
-            default:
-                ft_printf("%s\n", vars->dirs->arr[i].str);
-                break;
+            }
         }
-        ft_printf("  ");
+        else
+        {
+            DIR *dir = opendir(av[i]);
+            if (dir == NULL)
+                err_cannot_access(av[i]);
+        }
     }
-    ft_printf("\n");
 }
 
 void    without_args(s_vars *vars) {
@@ -66,7 +43,7 @@ void    without_args(s_vars *vars) {
     while ((entry = readdir(dir)) != NULL) {
         if (entry->d_name[0] != '.') {
             if (!add_element(vars->dirs, entry->d_name, entry->d_type)) {
-                // free_dirs(&vars->dirs);
+                free_dirs_wa(vars->dirs);
                 closedir(dir);
                 return;
             }
@@ -74,8 +51,8 @@ void    without_args(s_vars *vars) {
         }
     }
     closedir(dir);
-    print_ls(vars);
-    free_dirs(vars->dirs);
+    print_ls_wa(vars);
+    free_dirs_wa(vars->dirs);
 }
 
 int main(int ac, char **av) {
@@ -87,7 +64,8 @@ int main(int ac, char **av) {
 
     if (ac == 1)
         without_args(&vars);
-
+    else
+        with_args(&vars, ac, av);
 
     return (0);
 }
