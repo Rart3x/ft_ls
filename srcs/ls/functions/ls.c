@@ -18,6 +18,15 @@ bool add_element(s_dirs *dirs, const char *str, unsigned char type) {
     return TRUE;
 }
 
+void    define_file_permissions(s_arr *arr) {
+    struct stat file_stat;
+    stat(arr->str, &file_stat);
+
+    arr->executable = (file_stat.st_mode & S_IXUSR) ? true : false;
+    arr->readable = (file_stat.st_mode & S_IRUSR) ? true : false;
+    arr->writable = (file_stat.st_mode & S_IWUSR) ? true : false;
+}
+
 void    print_ls(s_vars *vars) {
     for (size_t i = 0; i < vars->dirs.size; i++) {
         switch (vars->dirs.arr[i].type) {
@@ -25,7 +34,14 @@ void    print_ls(s_vars *vars) {
                 ft_printf(BLUE "%s" RESET, vars->dirs.arr[i].str);
                 break;
             case 8:
-                ft_printf(GREEN "%s" RESET, vars->dirs.arr[i].str);
+                switch (vars->dirs.arr[i].executable) {
+                    case true:
+                        ft_printf(GREEN "%s" RESET, vars->dirs.arr[i].str);
+                        break;
+                    case false:
+                        ft_printf("%s", vars->dirs.arr[i].str);
+                        break;
+                }
                 break;
             default:
                 ft_printf("%s\n", vars->dirs.arr[i].str);
@@ -47,10 +63,11 @@ void    without_args(s_vars *vars) {
     while ((entry = readdir(dir)) != NULL) {
         if (entry->d_name[0] != '.') {
             if (!add_element(&vars->dirs, entry->d_name, entry->d_type)) {
-                free_dirs(&vars->dirs);
+                // free_dirs(&vars->dirs);
                 closedir(dir);
                 return;
             }
+            define_file_permissions(&vars->dirs.arr[vars->dirs.size - 1]);
         }
     }
     closedir(dir);

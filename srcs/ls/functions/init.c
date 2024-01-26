@@ -39,6 +39,9 @@ void    init_structs(s_vars *vars) {
 void    init_struc_arr(s_arr *arr) {
     arr->str = NULL;
     arr->type = 0;
+    arr->executable = false;
+    arr->readable = false;
+    arr->writable = false;
 }
 
 void    init_struc_args(s_args *args) { 

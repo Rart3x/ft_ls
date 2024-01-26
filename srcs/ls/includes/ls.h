@@ -22,7 +22,11 @@ typedef struct t_arr {
     char *str;
 
     unsigned char type;
-
+    
+    bool executable;
+    bool readable;
+    bool writable;
+    
 }   s_arr;
 
 typedef struct t_args {
