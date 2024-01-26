@@ -18,6 +18,24 @@ bool add_element(s_dirs *dirs, const char *str, unsigned char type) {
     return TRUE;
 }
 
+void    print_ls(s_vars *vars) {
+    for (size_t i = 0; i < vars->dirs.size; i++) {
+        switch (vars->dirs.arr[i].type) {
+            case 4:
+                ft_printf(BLUE "%s" RESET, vars->dirs.arr[i].str);
+                break;
+            case 8:
+                ft_printf(GREEN "%s" RESET, vars->dirs.arr[i].str);
+                break;
+            default:
+                ft_printf("%s\n", vars->dirs.arr[i].str);
+                break;
+        }
+        ft_printf(" ");
+    }
+    ft_printf("\n");
+}
+
 void    without_args(s_vars *vars) {
     DIR *dir = opendir(".");
     if (dir == NULL)
@@ -43,15 +61,13 @@ int main(int ac, char **av) {
 
     (void)av;
 
-
     init_structs(&vars);
 
     if (ac == 1)
         without_args(&vars);
 
-    for (size_t i = 0; i < vars.dirs.size; i++) {
-        printf("Nom : %s, Type : %u\n", vars.dirs.arr[i].str, vars.dirs.arr[i].type);
-    }
+    print_ls(&vars);
+    // free_dirs(&vars.dirs);
 
     return 0;
 }
