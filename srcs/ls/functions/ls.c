@@ -1,17 +1,24 @@
 #include "../includes/ls.h"
 
 void    with_args(s_vars *vars, int ac, char **av) {
+    DIR *dir;
 
     define_errors(ac, av);
     define_flags(vars, ac, av);
 
     for (size_t i = 1; i < (size_t)ac; i++) {
         
-        DIR *dir = opendir(av[i]);
+        if (!define_is_there_directory(ac, av))
+            dir = opendir(".");
+        else
+            dir = opendir(av[i]);
 
         if (dir)
         {
-            init_dirs(vars->dirs, av[i]);
+            if (!define_is_there_directory(ac, av))
+                init_dirs(vars->dirs, ".");
+            else
+                init_dirs(vars->dirs, av[i]);
 
             struct dirent *entry;
             while ((entry = readdir(dir)) != NULL) {

@@ -18,11 +18,25 @@ bool add_element(s_dirs *dirs, const char *str, unsigned char type) {
     return TRUE;
 }
 
+void    define_directory_blocks(s_vars *vars) {
+    struct stat file_stat;
+
+    for (size_t i = 0; i < vars->dirs->size; i++) {
+        stat(vars->dirs->arr[i].str, &file_stat);
+
+        ft_printf("%s\n", vars->dirs->arr[i].str);
+        ft_printf("%d\n", file_stat.st_blocks);
+        
+        vars->dirs->arr[i].blocks = file_stat.st_blocks;
+        vars->dirs->blocks += vars->dirs->arr[i].blocks;
+    }
+}
+
 void    define_errors(int ac, char **av) { 
     for (size_t i = 1; i < (size_t)ac; i++) {
         DIR *dir = opendir(av[i]);
 
-        if (dir == NULL)
+        if (dir == NULL && av[i][0] != '-')
             err_cannot_access(av[i]);
     }
 }
@@ -61,4 +75,14 @@ void    define_file_permissions(s_arr *arr) {
     arr->executable = (file_stat.st_mode & S_IXUSR) ? true : false;
     arr->readable = (file_stat.st_mode & S_IRUSR) ? true : false;
     arr->writable = (file_stat.st_mode & S_IWUSR) ? true : false;
+}
+
+bool    define_is_there_directory(int ac, char **av) {
+    for (size_t i = 1; i < (size_t)ac; i++) {
+        DIR *dir = opendir(av[i]);
+
+        if (dir)
+            return true;
+    }
+    return false;
 }

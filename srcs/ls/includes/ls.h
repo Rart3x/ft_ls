@@ -31,7 +31,7 @@
         bool readable;
         bool writable;
 
-        size_t bytes;
+        size_t blocks;
 
     }   s_arr;
 
@@ -39,7 +39,7 @@
         s_arr   *arr;
         char    *directory;
 
-        size_t  bytes;
+        size_t  blocks;
         size_t  capacity;
         size_t  size; 
 
@@ -61,6 +61,7 @@
         s_flags flags;
 
         size_t  current_dir;
+
     }   s_vars;
 
 /*---------------------------Functions---------------------------*/
@@ -90,6 +91,10 @@
 
     /*---------------------------Utils Functions---------------------------*/
         bool    add_element(s_dirs *dirs, const char *str, unsigned char type);
+
+        void    define_directory_blocks(s_vars *vars);
         void    define_errors(int ac, char **av);
         void    define_flags(s_vars *vars, int ac, char **av);
         void    define_file_permissions(s_arr *arr);
+
+        bool    define_is_there_directory(int ac, char **av);
