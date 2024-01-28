@@ -18,6 +18,33 @@ bool add_element(s_dirs *dirs, const char *str, unsigned char type) {
     return TRUE;
 }
 
+void    define_flags(s_vars *vars, int ac, char **av) {
+    for (size_t i = 1; i < (size_t)ac; i++) {
+
+    if (av[i][0] == '-') {
+            for (size_t j = 0; j < ft_strlen(av[i]); j++) { 
+                switch (av[i][j]) {
+                    case 'a':
+                        vars->flags.a = true;
+                        break;
+                    case 'l':
+                        vars->flags.l = true;
+                        break;
+                    case 'r':
+                        vars->flags.r = true;
+                        break;
+                    case 'R':
+                        vars->flags.R = true;
+                        break;
+                    case 't':
+                        vars->flags.t = true;
+                        break;
+                }
+            }
+        }
+    }
+}
+
 void    define_file_permissions(s_arr *arr) {
     struct stat file_stat;
 

@@ -31,14 +31,17 @@
         bool readable;
         bool writable;
 
+        size_t bytes;
+
     }   s_arr;
 
     typedef struct t_dirs {
         s_arr   *arr;
         char    *directory;
 
-        size_t capacity;
-        size_t size;
+        size_t  bytes;
+        size_t  capacity;
+        size_t  size; 
 
         struct t_dirs *next;
 
@@ -57,6 +60,7 @@
         s_dirs  *dirs;
         s_flags flags;
 
+        size_t  current_dir;
     }   s_vars;
 
 /*---------------------------Functions---------------------------*/
@@ -72,9 +76,10 @@
 
     /*---------------------------Without arguments functions---------------------------*/
         /*---------------------------Clear functions---------------------------*/
-            void    free_dirs_wa(s_dirs *dirs);
+            void    free_dirs(s_dirs *dirs);
         /*---------------------------Print functions---------------------------*/
-            void    print_ls_wa(s_vars *vars);
+            void    print_ls(s_vars *vars);
+            void    print_ls_long_format(s_vars *vars);
         /*---------------------------Sort functions---------------------------*/
         void    without_args(s_vars *vars);
     /*---------------------------With arguments functions---------------------------*/
@@ -84,5 +89,6 @@
         void    with_args(s_vars *vars, int ac, char **av);
 
     /*---------------------------Utils Functions---------------------------*/
-        bool   add_element(s_dirs *dirs, const char *str, unsigned char type);
-        void   define_file_permissions(s_arr *arr);
+        bool    add_element(s_dirs *dirs, const char *str, unsigned char type);
+        void    define_flags(s_vars *vars, int ac, char **av);
+        void    define_file_permissions(s_arr *arr);
