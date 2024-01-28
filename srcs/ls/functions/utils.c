@@ -18,10 +18,18 @@ bool add_element(s_dirs *dirs, const char *str, unsigned char type) {
     return TRUE;
 }
 
+void    define_errors(int ac, char **av) { 
+    for (size_t i = 1; i < (size_t)ac; i++) {
+        DIR *dir = opendir(av[i]);
+
+        if (dir == NULL)
+            err_cannot_access(av[i]);
+    }
+}
+
 void    define_flags(s_vars *vars, int ac, char **av) {
     for (size_t i = 1; i < (size_t)ac; i++) {
-
-    if (av[i][0] == '-') {
+        if (av[i][0] == '-') {
             for (size_t j = 0; j < ft_strlen(av[i]); j++) { 
                 switch (av[i][j]) {
                     case 'a':

@@ -2,15 +2,14 @@
 
 void    with_args(s_vars *vars, int ac, char **av) {
 
+    define_errors(ac, av);
     define_flags(vars, ac, av);
 
     for (size_t i = 1; i < (size_t)ac; i++) {
         
         DIR *dir = opendir(av[i]);
 
-        if (dir == NULL)
-            err_cannot_access(av[i]);
-        else
+        if (dir)
         {
             init_dirs(vars->dirs, av[i]);
 

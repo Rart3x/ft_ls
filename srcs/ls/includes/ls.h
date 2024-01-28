@@ -90,5 +90,6 @@
 
     /*---------------------------Utils Functions---------------------------*/
         bool    add_element(s_dirs *dirs, const char *str, unsigned char type);
+        void    define_errors(int ac, char **av);
         void    define_flags(s_vars *vars, int ac, char **av);
         void    define_file_permissions(s_arr *arr);
