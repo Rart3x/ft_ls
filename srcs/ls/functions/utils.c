@@ -64,19 +64,30 @@ void    define_flags(s_vars *vars, int ac, char **av) {
     }
 }
 
-
 void    define_file_date(s_arr *arr) {
     struct stat file_info;
+    struct tm *local_time;
 
-    time_t mod_time = file_info.st_mtime;
+    time_t mod_time;
 
-    strftime(arr->date, sizeof(arr->date), "%b. %e %H:%M", localtime(&mod_time));
+    stat(arr->str, &file_info);
+
+    mod_time = file_info.st_mtime;
+
+    local_time = localtime(&mod_time);
+    if (local_time->tm_isdst > 0)
+        mod_time -= 3600;
+
+    strftime(arr->date, sizeof(arr->date), "%b %e %H:%M", local_time);
 }
+
 
 void    define_file_permissions(s_arr *arr) {
     struct stat file_stat;
 
     stat(arr->str, &file_stat);
+
+    arr->executable = ((file_stat.st_mode & S_IXUSR) || (file_stat.st_mode & S_IXGRP) || (file_stat.st_mode & S_IXOTH));
 
     if (file_stat.st_mode & S_IRUSR) arr->user_permissions[0] |= TRUE;
     if (file_stat.st_mode & S_IWUSR) arr->user_permissions[1] |= TRUE;
@@ -104,6 +115,17 @@ void    define_file_size(s_arr *arr) {
     arr->size = (int)file_info.st_size;
 }
 
+void    define_group(s_arr *arr) {
+    struct stat file_info;
+    
+    stat(arr->str, &file_info);
+
+    struct group *grp = getgrgid(file_info.st_gid);
+    
+    if (grp != NULL)
+        arr->group = strdup(grp->gr_name);
+}
+
 bool    define_is_there_directory(int ac, char **av) {
     for (size_t i = 1; i < (size_t)ac; i++) {
         DIR *dir = opendir(av[i]);
@@ -115,6 +137,14 @@ bool    define_is_there_directory(int ac, char **av) {
         closedir(dir);
     }
     return false;
+}
+
+void    define_link(s_arr *arr) {
+    struct stat file_info;
+
+    lstat(arr->str, &file_info);
+
+    arr->links = file_info.st_nlink;
 }
 
 void    define_nb_dir(s_vars *vars, int ac, char **av) {

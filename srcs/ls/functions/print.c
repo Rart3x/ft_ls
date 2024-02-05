@@ -59,7 +59,8 @@ void    print_ls_long_format(s_vars *vars) {
             case 4:
                 print_file_type(vars->dirs->arr[i].type);
                 print_permissions(&vars->dirs->arr[i]);
-                ft_printf("%s %s ", vars->dirs->arr[i].owner, vars->dirs->arr[i].owner);
+                ft_printf("%d ", vars->dirs->arr[i].links);
+                ft_printf("%s %s ", vars->dirs->arr[i].owner, vars->dirs->arr[i].group);
                 ft_printf("%d ", vars->dirs->arr[i].size);
                 ft_printf("%s ", vars->dirs->arr[i].date);
                 ft_printf(BLUE "%s\n" RESET, vars->dirs->arr[i].str);
@@ -69,7 +70,8 @@ void    print_ls_long_format(s_vars *vars) {
                     case true:
                         print_file_type(vars->dirs->arr[i].type);
                         print_permissions(&vars->dirs->arr[i]);
-                        ft_printf("%s %s ", vars->dirs->arr[i].owner, vars->dirs->arr[i].owner);
+                        ft_printf("%d ", vars->dirs->arr[i].links);
+                        ft_printf("%s %s ", vars->dirs->arr[i].owner, vars->dirs->arr[i].group);
                         ft_printf("%d ", vars->dirs->arr[i].size);
                         ft_printf("%s ", vars->dirs->arr[i].date);
                         ft_printf(GREEN "%s\n" RESET, vars->dirs->arr[i].str);
@@ -77,7 +79,8 @@ void    print_ls_long_format(s_vars *vars) {
                     case false:
                         print_file_type(vars->dirs->arr[i].type);
                         print_permissions(&vars->dirs->arr[i]);
-                        ft_printf("%s %s ", vars->dirs->arr[i].owner, vars->dirs->arr[i].owner);
+                        ft_printf("%d ", vars->dirs->arr[i].links);
+                        ft_printf("%s %s ", vars->dirs->arr[i].owner, vars->dirs->arr[i].group);
                         ft_printf("%d ", vars->dirs->arr[i].size);
                         ft_printf("%s ", vars->dirs->arr[i].date);
                         ft_printf("%s\n", vars->dirs->arr[i].str);
@@ -87,7 +90,8 @@ void    print_ls_long_format(s_vars *vars) {
             default:
                 print_file_type(vars->dirs->arr[i].type);
                 print_permissions(&vars->dirs->arr[i]);
-                ft_printf("%s %s ", vars->dirs->arr[i].owner, vars->dirs->arr[i].owner);
+                ft_printf("%d ", vars->dirs->arr[i].links);
+                ft_printf("%s %s ", vars->dirs->arr[i].owner, vars->dirs->arr[i].group);
                 ft_printf("%d ", vars->dirs->arr[i].size);
                 ft_printf("%s ", vars->dirs->arr[i].date);
                 ft_printf("%s\n", vars->dirs->arr[i].str);

@@ -51,11 +51,19 @@ void    init_structs(s_vars *vars) {
 void    init_struc_arr(s_arr *arr) {
     arr->owner = NULL;
     arr->str = NULL;
-    arr->type = 0;
+
     arr->executable = false;
     arr->readable = false;
     arr->writable = false;
+
+    for (size_t i = 0; i < 3; i++) {
+        arr->user_permissions[i] = false;
+        arr->group_permissions[i] = false;
+        arr->others_permissions[i] = false;
+    }
+
     arr->blocks = 0;
+    arr->type = 0;
     arr->size = 0;
 }
 

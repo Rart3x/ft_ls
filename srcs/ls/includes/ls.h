@@ -26,7 +26,7 @@
         char *str;
 
         unsigned char type;
-        
+
         bool    executable;
         bool    readable;
         bool    writable;
@@ -35,11 +35,13 @@
         bool    group_permissions[3];
         bool    others_permissions[3];
 
+        char    date[80];
+        char    *group;
         char    *owner;
 
         size_t  blocks;
 
-        char    date[80];
+        int     links;
         int     size;
 
     }   s_arr;
@@ -109,6 +111,8 @@
         void    define_file_date(s_arr *arr);
         void    define_file_permissions(s_arr *arr);
         void    define_file_size(s_arr *arr);
+        void    define_group(s_arr *arr);
+        void    define_link(s_arr *arr);
         void    define_nb_dir(s_vars *vars, int ac, char **av);
         void    define_owner(s_arr *arr);
 
