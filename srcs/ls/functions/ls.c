@@ -29,17 +29,20 @@ void    with_args(s_vars *vars, int ac, char **av) {
                         closedir(dir);
                         return;
                     }
+                    define_file_date(&vars->dirs->arr[vars->dirs->size - 1]);
                     define_file_permissions(&vars->dirs->arr[vars->dirs->size - 1]);
+                    define_file_size(&vars->dirs->arr[vars->dirs->size - 1]); 
+                    define_owner(&vars->dirs->arr[vars->dirs->size - 1]);
                 }
             }
             if (vars->flags.l)
                 print_ls_long_format(vars);
             else
                 print_ls(vars);
-            free_dirs(vars->dirs);
         }
         closedir(dir);
     }
+    free_dirs(vars->dirs);
 }
 
 void    without_args(s_vars *vars) {
@@ -60,8 +63,8 @@ void    without_args(s_vars *vars) {
             define_file_permissions(&vars->dirs->arr[vars->dirs->size - 1]);
         }
     }
-    closedir(dir);
     print_ls(vars);
+    closedir(dir);
     free_dirs(vars->dirs);
 }
 

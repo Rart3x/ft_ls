@@ -16,13 +16,20 @@ char    **init_args(char **arr, int ac, char **av) {
 void   init_dirs(s_dirs *dirs, const char *directory) {
     if (dirs != NULL) {
         dirs->arr = malloc(sizeof(s_arr));
+
         if (dirs->arr != NULL) {
             init_struc_arr(dirs->arr);
             dirs->capacity = 1;
-            dirs->size = 0;
-            dirs->directory = strdup(directory);
             dirs->next = NULL;
-        } else {
+            dirs->size = 0;
+            
+            if (dirs->directory)
+                free(dirs->directory);
+            
+            dirs->directory = strdup(directory);
+        }
+        else
+        {
             free(dirs);
             return;
         }
@@ -31,8 +38,9 @@ void   init_dirs(s_dirs *dirs, const char *directory) {
 
 /*---------------------------Structs Init---------------------------*/
 void    init_structs(s_vars *vars) {
-    vars->nb_dir = 0;
+    vars->current_dir = 0;
     vars->dirs = malloc(sizeof(s_dirs));
+    vars->nb_dir = 0;
     if (!vars->dirs)
         exit(0);
 
@@ -41,11 +49,14 @@ void    init_structs(s_vars *vars) {
 }
 
 void    init_struc_arr(s_arr *arr) {
+    arr->owner = NULL;
     arr->str = NULL;
     arr->type = 0;
     arr->executable = false;
     arr->readable = false;
     arr->writable = false;
+    arr->blocks = 0;
+    arr->size = 0;
 }
 
 void    init_struc_dirs(s_dirs *dirs) {

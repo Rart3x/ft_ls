@@ -2,12 +2,11 @@
 
 bool add_element(s_dirs *dirs, const char *str, unsigned char type) {
     if (dirs->size == dirs->capacity) {
-        s_arr *new = realloc(dirs->arr, 2 * dirs->capacity * sizeof(s_arr));
-
-        if (new == NULL)
+        dirs->arr = realloc(dirs->arr, 2 * dirs->capacity * sizeof(s_arr));
+        
+        if (!dirs->arr)
             return FALSE;
         
-        dirs->arr = new;
         dirs->capacity *= 2;
     }
 
@@ -23,9 +22,6 @@ void    define_directory_blocks(s_vars *vars) {
 
     for (size_t i = 0; i < vars->dirs->size; i++) {
         stat(vars->dirs->arr[i].str, &file_stat);
-
-        ft_printf("%s\n", vars->dirs->arr[i].str);
-        ft_printf("%d\n", file_stat.st_blocks);
         
         vars->dirs->arr[i].blocks = file_stat.st_blocks;
         vars->dirs->blocks += vars->dirs->arr[i].blocks;
@@ -36,8 +32,9 @@ void    define_errors(int ac, char **av) {
     for (size_t i = 1; i < (size_t)ac; i++) {
         DIR *dir = opendir(av[i]);
 
-        if (dir == NULL && av[i][0] != '-')
+        if (!dir && av[i][0] != '-')
             err_cannot_access(av[i]);
+        closedir(dir);
     }
 }
 
@@ -67,22 +64,55 @@ void    define_flags(s_vars *vars, int ac, char **av) {
     }
 }
 
+
+void    define_file_date(s_arr *arr) {
+    struct stat file_info;
+
+    time_t mod_time = file_info.st_mtime;
+
+    strftime(arr->date, sizeof(arr->date), "%b. %e %H:%M", localtime(&mod_time));
+}
+
 void    define_file_permissions(s_arr *arr) {
     struct stat file_stat;
 
     stat(arr->str, &file_stat);
 
-    arr->executable = (file_stat.st_mode & S_IXUSR) ? true : false;
-    arr->readable = (file_stat.st_mode & S_IRUSR) ? true : false;
-    arr->writable = (file_stat.st_mode & S_IWUSR) ? true : false;
+    if (file_stat.st_mode & S_IRUSR) arr->user_permissions[0] |= TRUE;
+    if (file_stat.st_mode & S_IWUSR) arr->user_permissions[1] |= TRUE;
+    if (file_stat.st_mode & S_IXUSR) arr->user_permissions[2] |= TRUE;
+
+    if (file_stat.st_mode & S_IRGRP) arr->group_permissions[0] |= TRUE;
+    if (file_stat.st_mode & S_IWGRP) arr->group_permissions[1] |= TRUE;
+    if (file_stat.st_mode & S_IXGRP) arr->group_permissions[2] |= TRUE;
+
+    if (file_stat.st_mode & S_IROTH) arr->others_permissions[0] |= TRUE;
+    if (file_stat.st_mode & S_IWOTH) arr->others_permissions[1] |= TRUE;
+    if (file_stat.st_mode & S_IXOTH) arr->others_permissions[2] |= TRUE;
+
+    lstat (arr->str, &file_stat);
+
+    if (S_ISLNK(file_stat.st_mode))
+        arr->type = 2;
+}
+
+void    define_file_size(s_arr *arr) { 
+    struct stat file_info;
+
+    stat(arr->str, &file_info);
+
+    arr->size = (int)file_info.st_size;
 }
 
 bool    define_is_there_directory(int ac, char **av) {
     for (size_t i = 1; i < (size_t)ac; i++) {
         DIR *dir = opendir(av[i]);
 
-        if (dir)
+        if (dir) {
+            closedir(dir);
             return true;
+        }
+        closedir(dir);
     }
     return false;
 }
@@ -93,5 +123,15 @@ void    define_nb_dir(s_vars *vars, int ac, char **av) {
     
         if (dir)
             vars->nb_dir++;
+        closedir(dir);
     }
+}
+
+void    define_owner(s_arr *arr) { 
+    struct stat file_info;
+
+    stat(arr->str, &file_info);
+
+    struct passwd *pw = getpwuid(file_info.st_uid);
+    arr->owner = ft_strdup(pw->pw_name);
 }
