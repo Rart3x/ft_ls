@@ -86,3 +86,12 @@ bool    define_is_there_directory(int ac, char **av) {
     }
     return false;
 }
+
+void    define_nb_dir(s_vars *vars, int ac, char **av) {
+    for (size_t i = 1; i < (size_t)ac; i++) {
+        DIR *dir = opendir(av[i]);
+    
+        if (dir)
+            vars->nb_dir++;
+    }
+}

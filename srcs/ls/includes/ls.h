@@ -61,6 +61,7 @@
         s_flags flags;
 
         size_t  current_dir;
+        size_t  nb_dir;
 
     }   s_vars;
 
@@ -96,5 +97,6 @@
         void    define_errors(int ac, char **av);
         void    define_flags(s_vars *vars, int ac, char **av);
         void    define_file_permissions(s_arr *arr);
+        void    define_nb_dir(s_vars *vars, int ac, char **av);
 
         bool    define_is_there_directory(int ac, char **av);

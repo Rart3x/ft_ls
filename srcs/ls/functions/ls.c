@@ -5,6 +5,7 @@ void    with_args(s_vars *vars, int ac, char **av) {
 
     define_errors(ac, av);
     define_flags(vars, ac, av);
+    define_nb_dir(vars, ac, av);
 
     for (size_t i = 1; i < (size_t)ac; i++) {
         

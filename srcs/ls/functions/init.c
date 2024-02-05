@@ -18,8 +18,8 @@ void   init_dirs(s_dirs *dirs, const char *directory) {
         dirs->arr = malloc(sizeof(s_arr));
         if (dirs->arr != NULL) {
             init_struc_arr(dirs->arr);
-            dirs->size = 0;
             dirs->capacity = 1;
+            dirs->size = 0;
             dirs->directory = strdup(directory);
             dirs->next = NULL;
         } else {
@@ -31,6 +31,7 @@ void   init_dirs(s_dirs *dirs, const char *directory) {
 
 /*---------------------------Structs Init---------------------------*/
 void    init_structs(s_vars *vars) {
+    vars->nb_dir = 0;
     vars->dirs = malloc(sizeof(s_dirs));
     if (!vars->dirs)
         exit(0);

@@ -3,7 +3,8 @@
 void    print_ls(s_vars *vars) {
     // sort_files(vars);
 
-    ft_printf("%s:\n", vars->dirs->directory);
+    if (vars->nb_dir > 1)
+        ft_printf("%s:\n", vars->dirs->directory);
     for (size_t i = 0; i < vars->dirs->size; i++) {
         switch (vars->dirs->arr[i].type) {
             case 4:
