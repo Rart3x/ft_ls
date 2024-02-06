@@ -93,6 +93,7 @@
         /*---------------------------Print functions---------------------------*/
             void    print_ls(s_vars *vars);
             void    print_ls_long_format(s_vars *vars);
+            void    print_info_long_format(s_arr *arr);
             void    print_permissions(s_arr *arr);
         /*---------------------------Sort functions---------------------------*/
         void    without_args(s_vars *vars);
@@ -110,6 +111,7 @@
         void    define_flags(s_vars *vars, int ac, char **av);
         void    define_file_date(s_arr *arr);
         void    define_file_permissions(s_arr *arr);
+        void    define_file_settings(s_arr *arr);
         void    define_file_size(s_arr *arr);
         void    define_group(s_arr *arr);
         void    define_link(s_arr *arr);

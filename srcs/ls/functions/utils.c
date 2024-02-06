@@ -38,6 +38,15 @@ void    define_errors(int ac, char **av) {
     }
 }
 
+void    define_file_settings(s_arr *arr) {
+    define_file_date(arr);
+    define_file_permissions(arr);
+    define_file_size(arr); 
+    define_group(arr);
+    define_link(arr);
+    define_owner(arr);
+}
+
 void    define_flags(s_vars *vars, int ac, char **av) {
     for (size_t i = 1; i < (size_t)ac; i++) {
         if (av[i][0] == '-') {

@@ -57,43 +57,23 @@ void    print_ls_long_format(s_vars *vars) {
     for (size_t i = 0; i < vars->dirs->size; i++) {
         switch (vars->dirs->arr[i].type) {
             case 4:
-                print_file_type(vars->dirs->arr[i].type);
-                print_permissions(&vars->dirs->arr[i]);
-                ft_printf("%d ", vars->dirs->arr[i].links);
-                ft_printf("%s %s ", vars->dirs->arr[i].owner, vars->dirs->arr[i].group);
-                ft_printf("%d ", vars->dirs->arr[i].size);
-                ft_printf("%s ", vars->dirs->arr[i].date);
+                print_info_long_format(&vars->dirs->arr[i]);
                 ft_printf(BLUE "%s\n" RESET, vars->dirs->arr[i].str);
                 break;
             case 8:
                 switch (vars->dirs->arr[i].executable) {
                     case true:
-                        print_file_type(vars->dirs->arr[i].type);
-                        print_permissions(&vars->dirs->arr[i]);
-                        ft_printf("%d ", vars->dirs->arr[i].links);
-                        ft_printf("%s %s ", vars->dirs->arr[i].owner, vars->dirs->arr[i].group);
-                        ft_printf("%d ", vars->dirs->arr[i].size);
-                        ft_printf("%s ", vars->dirs->arr[i].date);
+                        print_info_long_format(&vars->dirs->arr[i]);
                         ft_printf(GREEN "%s\n" RESET, vars->dirs->arr[i].str);
                         break;
                     case false:
-                        print_file_type(vars->dirs->arr[i].type);
-                        print_permissions(&vars->dirs->arr[i]);
-                        ft_printf("%d ", vars->dirs->arr[i].links);
-                        ft_printf("%s %s ", vars->dirs->arr[i].owner, vars->dirs->arr[i].group);
-                        ft_printf("%d ", vars->dirs->arr[i].size);
-                        ft_printf("%s ", vars->dirs->arr[i].date);
+                        print_info_long_format(&vars->dirs->arr[i]);
                         ft_printf("%s\n", vars->dirs->arr[i].str);
                         break;
                 }
                 break;
             default:
-                print_file_type(vars->dirs->arr[i].type);
-                print_permissions(&vars->dirs->arr[i]);
-                ft_printf("%d ", vars->dirs->arr[i].links);
-                ft_printf("%s %s ", vars->dirs->arr[i].owner, vars->dirs->arr[i].group);
-                ft_printf("%d ", vars->dirs->arr[i].size);
-                ft_printf("%s ", vars->dirs->arr[i].date);
+                print_info_long_format(&vars->dirs->arr[i]);
                 ft_printf("%s\n", vars->dirs->arr[i].str);
                 break;
         }
@@ -169,4 +149,13 @@ void    print_permissions(s_arr *arr) {
         }
     }
     ft_printf(" ");
+}
+
+void    print_info_long_format(s_arr *arr) { 
+    print_file_type(arr->type);
+    print_permissions(arr);
+    ft_printf("%d ", arr->links);
+    ft_printf("%s %s ", arr->owner, arr->group);
+    ft_printf("%d ", arr->size);
+    ft_printf("%s ", arr->date);
 }

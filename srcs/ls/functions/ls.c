@@ -29,6 +29,7 @@ void    with_args(s_vars *vars, int ac, char **av) {
                         closedir(dir);
                         return;
                     }
+                    define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
                     define_file_date(&vars->dirs->arr[vars->dirs->size - 1]);
                     define_file_permissions(&vars->dirs->arr[vars->dirs->size - 1]);
                     define_file_size(&vars->dirs->arr[vars->dirs->size - 1]); 
