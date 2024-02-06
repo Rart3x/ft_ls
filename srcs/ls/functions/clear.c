@@ -6,10 +6,14 @@ void free_dirs(s_dirs *dirs) {
     while (current) {
         s_dirs *next = current->next;
 
-        if (current->arr) {
-            while (current->size > 0) {
-                free(current->arr[current->size - 1].str);
-                free(current->arr[current->size - 1].owner);
+        if (current->arr && current->directory) {
+            while (current->size >  0) {
+                if (current->arr[current->size -  1].str)
+                    free(current->arr[current->size -  1].str);
+                if (current->arr[current->size -  1].group)
+                    free(current->arr[current->size -  1].group);
+                if (current->arr[current->size -  1].owner)
+                    free(current->arr[current->size -  1].owner);
                 current->size--;
             }
             free(current->arr);

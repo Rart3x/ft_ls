@@ -30,12 +30,6 @@ void    with_args(s_vars *vars, int ac, char **av) {
                         return;
                     }
                     define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
-                    define_file_date(&vars->dirs->arr[vars->dirs->size - 1]);
-                    define_file_permissions(&vars->dirs->arr[vars->dirs->size - 1]);
-                    define_file_size(&vars->dirs->arr[vars->dirs->size - 1]); 
-                    define_group(&vars->dirs->arr[vars->dirs->size - 1]);
-                    define_link(&vars->dirs->arr[vars->dirs->size - 1]);
-                    define_owner(&vars->dirs->arr[vars->dirs->size - 1]);
                 }
             }
             if (vars->flags.l)
@@ -63,7 +57,7 @@ void    without_args(s_vars *vars) {
                 closedir(dir);
                 return;
             }
-            define_file_permissions(&vars->dirs->arr[vars->dirs->size - 1]);
+            define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
         }
     }
     print_ls(vars);
@@ -73,8 +67,6 @@ void    without_args(s_vars *vars) {
 
 int main(int ac, char **av) {
     s_vars vars;
-
-    (void)av;
 
     init_structs(&vars);
 

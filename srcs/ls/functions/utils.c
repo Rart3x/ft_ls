@@ -90,12 +90,12 @@ void    define_file_date(s_arr *arr) {
     strftime(arr->date, sizeof(arr->date), "%b %e %H:%M", local_time);
 }
 
-
 void    define_file_permissions(s_arr *arr) {
     struct stat file_stat;
 
-    stat(arr->str, &file_stat);
-
+    if (stat(arr->str, &file_stat))
+        return;
+    
     arr->executable = ((file_stat.st_mode & S_IXUSR) || (file_stat.st_mode & S_IXGRP) || (file_stat.st_mode & S_IXOTH));
 
     if (file_stat.st_mode & S_IRUSR) arr->user_permissions[0] |= TRUE;
@@ -110,7 +110,8 @@ void    define_file_permissions(s_arr *arr) {
     if (file_stat.st_mode & S_IWOTH) arr->others_permissions[1] |= TRUE;
     if (file_stat.st_mode & S_IXOTH) arr->others_permissions[2] |= TRUE;
 
-    lstat (arr->str, &file_stat);
+    if (lstat(arr->str, &file_stat))
+        return;
 
     if (S_ISLNK(file_stat.st_mode))
         arr->type = 2;

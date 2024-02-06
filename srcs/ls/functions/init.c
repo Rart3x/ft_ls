@@ -15,7 +15,8 @@ char    **init_args(char **arr, int ac, char **av) {
 
 void   init_dirs(s_dirs *dirs, const char *directory) {
     if (dirs != NULL) {
-        dirs->arr = malloc(sizeof(s_arr));
+        if (!dirs->arr)
+            dirs->arr = malloc(sizeof(s_arr));
 
         if (dirs->arr != NULL) {
             init_struc_arr(dirs->arr);
@@ -43,6 +44,8 @@ void    init_structs(s_vars *vars) {
     vars->nb_dir = 0;
     if (!vars->dirs)
         exit(0);
+    
+    vars->dirs->arr = NULL;
 
     init_struc_dirs(vars->dirs);
     init_struc_flags(&vars->flags);
