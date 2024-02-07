@@ -39,12 +39,14 @@ void   init_dirs(s_dirs *dirs, const char *directory) {
 
 /*---------------------------Structs Init---------------------------*/
 void    init_structs(s_vars *vars) {
-    vars->current_dir = 0;
     vars->dirs = malloc(sizeof(s_dirs));
-    vars->nb_dir = 0;
     if (!vars->dirs)
         exit(0);
     
+    vars->current_dir = 0;
+    vars->nb_dir = 0;
+
+    vars->dirs->next = NULL;
     vars->dirs->arr = NULL;
 
     init_struc_dirs(vars->dirs);
