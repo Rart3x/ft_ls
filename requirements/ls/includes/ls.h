@@ -31,9 +31,9 @@
         bool    readable;
         bool    writable;
 
-        bool    user_permissions[3];
         bool    group_permissions[3];
         bool    others_permissions[3];
+        bool    user_permissions[3];
 
         char    date[80];
         char    *group;

@@ -6,3 +6,6 @@
 *.json
 
 .obj/
+.test_obj/
+
+tests/
