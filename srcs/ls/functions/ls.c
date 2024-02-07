@@ -23,18 +23,18 @@ void    with_args(s_vars *vars, int ac, char **av) {
 
             struct dirent *entry;
             while ((entry = readdir(dir)) != NULL) {
-                if (vars->flags.a == false && entry->d_name[0] != '.') {
+                if (!vars->flags.a && entry->d_name[0] != '.') {
                     if (!add_element(vars->dirs, entry->d_name, entry->d_type)) {
-                        free_dirs(vars->dirs);
                         closedir(dir);
+                        free_dirs(vars->dirs);
                         return;
                     }
                     define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
                 }
-                else if (vars->flags.a == true) {
+                else if (vars->flags.a) {
                     if (!add_element(vars->dirs, entry->d_name, entry->d_type)) {
-                        free_dirs(vars->dirs);
                         closedir(dir);
+                        free_dirs(vars->dirs);
                         return;
                     }
                     define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
@@ -61,14 +61,15 @@ void    without_args(s_vars *vars) {
     while ((entry = readdir(dir)) != NULL) {
         if (entry->d_name[0] != '.') {
             if (!add_element(vars->dirs, entry->d_name, entry->d_type)) {
-                free_dirs(vars->dirs);
                 closedir(dir);
+                free_dirs(vars->dirs);
                 return;
             }
             define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
         }
     }
     print_ls(vars);
+
     closedir(dir);
     free_dirs(vars->dirs);
 }

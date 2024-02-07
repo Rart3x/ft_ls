@@ -15,7 +15,7 @@ void    print_file_type(unsigned char type) {
 }
 
 void    print_ls(s_vars *vars) {
-    // sort_files(vars);
+    sort_files(vars);
 
     if (vars->nb_dir > 1)
         ft_printf("%s:\n", vars->dirs->directory);
@@ -49,8 +49,7 @@ void    print_ls(s_vars *vars) {
 }
 
 void    print_ls_long_format(s_vars *vars) {
-
-    // sort_files(vars);
+    sort_files(vars);
 
     define_directory_blocks(vars);
 

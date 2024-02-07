@@ -101,6 +101,10 @@
         /*---------------------------Clear functions---------------------------*/
         /*---------------------------Print functions---------------------------*/
         /*---------------------------Sort functions---------------------------*/
+            void    sort_by_name(s_vars *vars);
+            void    sort_by_time(s_vars *vars);
+            void    sort_files(s_vars *vars);
+
         void    with_args(s_vars *vars, int ac, char **av);
 
     /*---------------------------Utils Functions---------------------------*/
