@@ -5,11 +5,6 @@
 #define BUFFER_SIZE 1024
 
 int main(int argc, char *argv[]) {
-    if (argc <  2) {
-        printf("usage: %s <directory>\n", argv[0]);
-        return  1;
-    }
-
     char buffer[BUFFER_SIZE];
     char ft_ls_cmd[BUFFER_SIZE];
     char ls_cmd[BUFFER_SIZE];
@@ -24,7 +19,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Execution of ft_ls
-    printf("\033[34mft_ls");
+    printf("\033[33mft_ls");
     for (int i = 1; i < argc; ++i) {
         printf(" %s", argv[i]);
     }
@@ -48,11 +43,12 @@ int main(int argc, char *argv[]) {
     }
 
     // Execution of ls
-    printf("\033[34m\nls");
-    for (int i = 1; i < argc; ++i) {
+    printf("\033[33m\nls");
+    for (int i =  1; i < argc; ++i) {
         printf(" %s", argv[i]);
     }
     printf("\n\033[0m");
+
     
     FILE *ls_fp = popen(ls_cmd, "r");
     if (ls_fp == NULL)

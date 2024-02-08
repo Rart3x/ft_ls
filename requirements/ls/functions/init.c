@@ -54,8 +54,10 @@ void    init_structs(s_vars *vars) {
 }
 
 void    init_struc_arr(s_arr *arr) {
+    arr->group = NULL;
     arr->owner = NULL;
     arr->str = NULL;
+    arr->path = NULL;
 
     arr->executable = false;
     arr->readable = false;

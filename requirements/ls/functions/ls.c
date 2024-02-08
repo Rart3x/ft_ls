@@ -1,6 +1,7 @@
 #include "../includes/ls.h"
 
 void    with_args(s_vars *vars, int ac, char **av) {
+    bool tmp = false;
     DIR *dir;
 
     define_errors(ac, av);
@@ -13,8 +14,7 @@ void    with_args(s_vars *vars, int ac, char **av) {
             dir = opendir(".");
         else
             dir = opendir(av[i]);
-
-        if (dir)
+        if (dir && (is_file_exist(av[i]) || is_flag(av[i])))
         {
             if (!is_there_directory(ac, av))
                 init_dirs(vars->dirs, ".");
@@ -23,8 +23,18 @@ void    with_args(s_vars *vars, int ac, char **av) {
 
             struct dirent *entry;
             while ((entry = readdir(dir)) != NULL) {
-                if (!is_file_exist(entry->d_name))
-                    err_cannot_access(entry->d_name);
+                tmp = false;
+                if (is_file_exist(av[i]) && !is_directory(av[i])) {
+                    if (!add_element(vars->dirs, av[i], entry->d_type)) {
+                        closedir(dir);
+                        free_dirs(vars->dirs);
+                        return;
+                    }
+                    define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
+                    print_ls(vars, TRUE);
+                    tmp = true;
+                    break;
+                }
                 else if (!vars->flags.a && entry->d_name[0] != '.') {
                     if (!add_element(vars->dirs, entry->d_name, entry->d_type)) {
                         closedir(dir);
@@ -42,11 +52,11 @@ void    with_args(s_vars *vars, int ac, char **av) {
                     define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
                 }
             }
-            if (is_file_exist(entry->d_name)) {
-                if (vars->flags.l)
-                    print_ls_long_format(vars);
+            if (!tmp) {
+                if (!vars->flags.l)
+                    print_ls(vars, FALSE);
                 else
-                    print_ls(vars);
+                    print_ls_long_format(vars);
             }
         }
         closedir(dir);
@@ -72,7 +82,7 @@ void    without_args(s_vars *vars) {
             define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
         }
     }
-    print_ls(vars);
+    print_ls(vars, FALSE);
 
     closedir(dir);
     free_dirs(vars->dirs);

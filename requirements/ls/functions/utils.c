@@ -10,9 +10,14 @@ bool add_element(s_dirs *dirs, const char *str, unsigned char type) {
         dirs->capacity *= 2;
     }
 
+    char *path = ft_strjoin(dirs->directory, "/");
+
+    dirs->arr[dirs->size].path = ft_strjoin(path, str);
     dirs->arr[dirs->size].str = ft_strdup(str);
     dirs->arr[dirs->size].type = type;
     dirs->size++;
+
+    free(path);
 
     return TRUE;
 }
@@ -32,24 +37,16 @@ void    define_errors(int ac, char **av) {
     for (size_t i = 1; i < (size_t)ac; i++) {
         DIR *dir = opendir(av[i]);
 
-        if (!dir && av[i][0] != '-')
+        if (!dir && av[i][0] != '-' && !is_file_exist(av[i]))
             err_cannot_access(av[i]);
         closedir(dir);
     }
 }
 
-bool    is_file_exist(const char *str) {
-    struct stat file_stat;
-
-    if (stat(str, &file_stat) != 0)
-        return FALSE;
-    return TRUE;
-}
-
 void    define_file_settings(s_arr *arr) {
     define_file_date(arr);
     define_file_permissions(arr);
-    define_file_size(arr); 
+    define_file_size(arr);
     define_group(arr);
     define_link(arr);
     define_owner(arr);
@@ -87,7 +84,7 @@ void    define_file_date(s_arr *arr) {
 
     time_t mod_time;
 
-    stat(arr->str, &file_info);
+    stat(arr->path, &file_info);
 
     mod_time = file_info.st_mtime;
 
@@ -101,7 +98,7 @@ void    define_file_date(s_arr *arr) {
 void    define_file_permissions(s_arr *arr) {
     struct stat file_stat;
 
-    if (stat(arr->str, &file_stat))
+    if (stat(arr->path, &file_stat))
         return;
     
     arr->executable = ((file_stat.st_mode & S_IXUSR) || (file_stat.st_mode & S_IXGRP) || (file_stat.st_mode & S_IXOTH));
@@ -118,7 +115,7 @@ void    define_file_permissions(s_arr *arr) {
     if (file_stat.st_mode & S_IWOTH) arr->others_permissions[1] |= TRUE;
     if (file_stat.st_mode & S_IXOTH) arr->others_permissions[2] |= TRUE;
 
-    if (lstat(arr->str, &file_stat))
+    if (lstat(arr->path, &file_stat))
         return;
 
     if (S_ISLNK(file_stat.st_mode))
@@ -128,7 +125,7 @@ void    define_file_permissions(s_arr *arr) {
 void    define_file_size(s_arr *arr) { 
     struct stat file_info;
 
-    stat(arr->str, &file_info);
+    stat(arr->path, &file_info);
 
     arr->size = (int)file_info.st_size;
 }
@@ -136,31 +133,17 @@ void    define_file_size(s_arr *arr) {
 void    define_group(s_arr *arr) {
     struct stat file_info;
     
-    stat(arr->str, &file_info);
+    stat(arr->path, &file_info);
 
     struct group *grp = getgrgid(file_info.st_gid);
     
-    if (grp != NULL)
-        arr->group = strdup(grp->gr_name);
-}
-
-bool    is_there_directory(int ac, char **av) {
-    for (size_t i = 1; i < (size_t)ac; i++) {
-        DIR *dir = opendir(av[i]);
-
-        if (dir) {
-            closedir(dir);
-            return true;
-        }
-        closedir(dir);
-    }
-    return false;
+    arr->group = strdup(grp->gr_name);
 }
 
 void    define_link(s_arr *arr) {
     struct stat file_info;
 
-    lstat(arr->str, &file_info);
+    lstat(arr->path, &file_info);
 
     arr->links = file_info.st_nlink;
 }
@@ -178,7 +161,7 @@ void    define_nb_dir(s_vars *vars, int ac, char **av) {
 void    define_owner(s_arr *arr) { 
     struct stat file_info;
 
-    stat(arr->str, &file_info);
+    stat(arr->path, &file_info);
 
     struct passwd *pw = getpwuid(file_info.st_uid);
     arr->owner = ft_strdup(pw->pw_name);

@@ -14,32 +14,55 @@ void    print_file_type(unsigned char type) {
     }
 }
 
-void    print_ls(s_vars *vars) {
+void    print_ls(s_vars *vars, bool print_dir_name) {
     sort_files(vars);
 
-    if (vars->nb_dir > 1)
-        ft_printf("%s:\n", vars->dirs->directory);
-    for (size_t i = 0; i < vars->dirs->size; i++) {
-        switch (vars->dirs->arr[i].type) {
+    if (print_dir_name) {
+        switch (vars->dirs->arr[0].type) {
             case 4:
-                ft_printf(BLUE "%s" RESET, vars->dirs->arr[i].str);
+                ft_printf(BLUE "%s" RESET, vars->dirs->arr[0].str);
                 break;
             case 8:
-                switch (vars->dirs->arr[i].executable) {
+                switch (vars->dirs->arr[0].executable) {
                     case true:
-                        ft_printf(GREEN "%s" RESET, vars->dirs->arr[i].str);
+                        ft_printf(GREEN "%s" RESET, vars->dirs->arr[0].str);
                         break;
                     case false:
-                        ft_printf("%s", vars->dirs->arr[i].str);
+                        ft_printf("%s", vars->dirs->arr[0].str);
                         break;
                 }
                 break;
             default:
-                ft_printf("%s\n", vars->dirs->arr[i].str);
+                ft_printf("%s\n", vars->dirs->arr[0].str);
                 break;
         }
-        ft_printf("  ");
     }
+    else {
+        if (vars->nb_dir > 1)
+            ft_printf("%s:\n", vars->dirs->directory);
+        for (size_t i = 0; i < vars->dirs->size; i++) {
+            switch (vars->dirs->arr[i].type) {
+                case 4:
+                    ft_printf(BLUE "%s" RESET, vars->dirs->arr[i].str);
+                    break;
+                case 8:
+                    switch (vars->dirs->arr[i].executable) {
+                        case true:
+                            ft_printf(GREEN "%s" RESET, vars->dirs->arr[i].str);
+                            break;
+                        case false:
+                            ft_printf("%s", vars->dirs->arr[i].str);
+                            break;
+                    }
+                    break;
+                default:
+                    ft_printf("%s\n", vars->dirs->arr[i].str);
+                    break;
+            }
+            ft_printf("  ");
+        }
+    }
+
     if (vars->current_dir)
         ft_printf("\n\n");
     else

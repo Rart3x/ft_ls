@@ -23,7 +23,6 @@
 
 /*---------------------------Structs---------------------------*/
     typedef struct t_arr { 
-        char *str;
 
         unsigned char type;
 
@@ -38,6 +37,8 @@
         char    date[80];
         char    *group;
         char    *owner;
+        char    *str;
+        char    *path;
 
         size_t  blocks;
 
@@ -91,7 +92,7 @@
         /*---------------------------Clear functions---------------------------*/
             void    free_dirs(s_dirs *dirs);
         /*---------------------------Print functions---------------------------*/
-            void    print_ls(s_vars *vars);
+            void    print_ls(s_vars *vars, bool print_dir_name);
             void    print_ls_long_format(s_vars *vars);
             void    print_info_long_format(s_arr *arr);
             void    print_permissions(s_arr *arr);
@@ -109,18 +110,20 @@
 
     /*---------------------------Utils Functions---------------------------*/
         bool    add_element(s_dirs *dirs, const char *str, unsigned char type);
-
-        void    define_directory_blocks(s_vars *vars);
-        void    define_errors(int ac, char **av);
-        void    define_flags(s_vars *vars, int ac, char **av);
-        void    define_file_date(s_arr *arr);
-        void    define_file_permissions(s_arr *arr);
-        void    define_file_settings(s_arr *arr);
-        void    define_file_size(s_arr *arr);
-        void    define_group(s_arr *arr);
-        void    define_link(s_arr *arr);
-        void    define_nb_dir(s_vars *vars, int ac, char **av);
-        void    define_owner(s_arr *arr);
-
-        bool    is_file_exist(const char *str);
-        bool    is_there_directory(int ac, char **av);
+        /*---------------------------Define Functions---------------------------*/
+            void    define_directory_blocks(s_vars *vars);
+            void    define_errors(int ac, char **av);
+            void    define_flags(s_vars *vars, int ac, char **av);
+            void    define_file_date(s_arr *arr);
+            void    define_file_permissions(s_arr *arr);
+            void    define_file_settings(s_arr *arr);
+            void    define_file_size(s_arr *arr);
+            void    define_group(s_arr *arr);
+            void    define_link(s_arr *arr);
+            void    define_nb_dir(s_vars *vars, int ac, char **av);
+            void    define_owner(s_arr *arr);
+        /*---------------------------Is Functions---------------------------*/
+            bool    is_directory(const char *str);
+            bool    is_file_exist(const char *str);
+            bool    is_flag(const char *str);
+            bool    is_there_directory(int ac, char **av);
