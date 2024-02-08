@@ -9,21 +9,23 @@ void    with_args(s_vars *vars, int ac, char **av) {
 
     for (size_t i = 1; i < (size_t)ac; i++) {
         
-        if (!define_is_there_directory(ac, av))
+        if (!is_there_directory(ac, av))
             dir = opendir(".");
         else
             dir = opendir(av[i]);
 
         if (dir)
         {
-            if (!define_is_there_directory(ac, av))
+            if (!is_there_directory(ac, av))
                 init_dirs(vars->dirs, ".");
             else
                 init_dirs(vars->dirs, av[i]);
 
             struct dirent *entry;
             while ((entry = readdir(dir)) != NULL) {
-                if (!vars->flags.a && entry->d_name[0] != '.') {
+                if (!is_file_exist(entry->d_name))
+                    err_cannot_access(entry->d_name);
+                else if (!vars->flags.a && entry->d_name[0] != '.') {
                     if (!add_element(vars->dirs, entry->d_name, entry->d_type)) {
                         closedir(dir);
                         free_dirs(vars->dirs);
@@ -40,10 +42,12 @@ void    with_args(s_vars *vars, int ac, char **av) {
                     define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
                 }
             }
-            if (vars->flags.l)
-                print_ls_long_format(vars);
-            else
-                print_ls(vars);
+            if (is_file_exist(entry->d_name)) {
+                if (vars->flags.l)
+                    print_ls_long_format(vars);
+                else
+                    print_ls(vars);
+            }
         }
         closedir(dir);
         free_dirs(vars->dirs);

@@ -38,6 +38,14 @@ void    define_errors(int ac, char **av) {
     }
 }
 
+bool    is_file_exist(const char *str) {
+    struct stat file_stat;
+
+    if (stat(str, &file_stat) != 0)
+        return FALSE;
+    return TRUE;
+}
+
 void    define_file_settings(s_arr *arr) {
     define_file_date(arr);
     define_file_permissions(arr);
@@ -136,7 +144,7 @@ void    define_group(s_arr *arr) {
         arr->group = strdup(grp->gr_name);
 }
 
-bool    define_is_there_directory(int ac, char **av) {
+bool    is_there_directory(int ac, char **av) {
     for (size_t i = 1; i < (size_t)ac; i++) {
         DIR *dir = opendir(av[i]);
 

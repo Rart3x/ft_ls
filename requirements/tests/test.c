@@ -59,8 +59,12 @@ int main(int argc, char *argv[]) {
         return  1;
 
     while (fgets(buffer, BUFFER_SIZE, ls_fp) != NULL) {
-        printf("%s", buffer);
+        char *newline = strchr(buffer, '\n');
+        if (newline)
+            *newline = '\0';
+        printf("%s  ", buffer);
     }
+    printf("\n");
 
     pclose(ft_ls_fp);
     pclose(ls_fp);

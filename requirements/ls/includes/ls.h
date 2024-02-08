@@ -122,4 +122,5 @@
         void    define_nb_dir(s_vars *vars, int ac, char **av);
         void    define_owner(s_arr *arr);
 
-        bool    define_is_there_directory(int ac, char **av);
+        bool    is_file_exist(const char *str);
+        bool    is_there_directory(int ac, char **av);
