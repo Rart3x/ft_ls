@@ -62,6 +62,7 @@ void    with_args(s_vars *vars, int ac, char **av) {
         closedir(dir);
         free_dirs(vars->dirs);
     }
+    free(vars->dirs);
 }
 
 void    without_args(s_vars *vars) {

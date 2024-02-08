@@ -1,27 +1,36 @@
 #include "../includes/ls.h"
 
 void free_dirs(s_dirs *dirs) {
-    s_dirs *current = dirs;
+    while (dirs) {
+        s_dirs *next = dirs->next;
 
-    while (current) {
-        s_dirs *next = current->next;
-
-        if (current->arr && current->directory) {
-            while (current->size >  0) {
-                if (current->arr[current->size -  1].group)
-                    free(current->arr[current->size -  1].group);
-                if (current->arr[current->size -  1].owner)
-                    free(current->arr[current->size -  1].owner);
-                if (current->arr[current->size -  1].str)
-                    free(current->arr[current->size -  1].str);
-                if (current->arr[current->size -  1].path)
-                    free(current->arr[current->size -  1].path);
-                current->size--;
+        if (dirs->arr) {
+            for (size_t i = 0; i < dirs->size; i++) {
+                if (dirs->arr[i].group) {
+                    free(dirs->arr[i].group);
+                    dirs->arr[i].group = NULL;
+                }
+                if (dirs->arr[i].owner) {
+                    free(dirs->arr[i].owner);
+                    dirs->arr[i].owner = NULL;
+                }
+                if (dirs->arr[i].str) {
+                    free(dirs->arr[i].str);
+                    dirs->arr[i].str = NULL;
+                }
+                if (dirs->arr[i].path) {
+                    free(dirs->arr[i].path);
+                    dirs->arr[i].path = NULL;
+                }
             }
-            free(current->arr);
-            free(current->directory);
+            free(dirs->arr);
+            dirs->arr = NULL;
         }
-        free(current);
-        current = next;
+
+        if (dirs->directory) {
+            free(dirs->directory);
+            dirs->directory = NULL;
+        }
+        dirs = next;
     }
 }
