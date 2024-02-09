@@ -178,3 +178,28 @@ void    define_owner(s_arr *arr) {
     struct passwd *pw = getpwuid(file_info.st_uid);
     arr->owner = ft_strdup(pw->pw_name);
 }
+
+void    define_subdirs(s_vars *vars, char *actual_dir) {
+    DIR             *dir;
+    DIR             *subdir;
+    struct dirent   *entry;
+
+    if ((dir = opendir(actual_dir))) {
+        while ((entry = readdir(dir))) {
+            char *full_path;
+         
+            if (entry->d_name[0] != '.') {
+                full_path = ft_strjoin(actual_dir, entry->d_name);
+                if ((subdir = opendir(full_path)) && full_path[0] != '.') {
+                    recursive(vars, full_path);
+                    define_subdirs(vars, full_path);
+                    closedir(subdir);
+                }
+
+                free(full_path);
+            }
+        }
+    }
+    closedir(dir);
+    (void)vars;
+}

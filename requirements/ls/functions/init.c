@@ -1,18 +1,6 @@
 #include "../includes/ls.h"
 
 /*---------------------------Random Init---------------------------*/
-char    **init_args(char **arr, int ac, char **av) {
-    
-    arr = malloc(sizeof(char *) * (count_args_2d(av) - 1));
-    if (!arr)
-        return false;
-
-    for (size_t i = 1; i < (size_t)ac; i++) {
-        arr[i - 1] = ft_strdup(av[i]);
-    }
-    return arr;
-}
-
 void   init_dirs(s_dirs *dirs, const char *directory) {
     if (dirs != NULL) {
         if (!dirs->arr)

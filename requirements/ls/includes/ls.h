@@ -69,8 +69,8 @@
     }   s_flags;
 
     typedef struct t_vars {
-        s_dirs  *dirs;
-        s_flags flags;
+        s_dirs      *dirs;
+        s_flags     flags;
 
         size_t  current_dir;
         size_t  nb_dir;
@@ -80,34 +80,23 @@
 /*---------------------------Functions---------------------------*/
 
     /*---------------------------Init Functions---------------------------*/
-        char    **init_args(char **args, int ac, char **av);
         void    init_dirs(s_dirs *dirs, const char *directory);
 
         void    init_struc_arr(s_arr *arr);
         void    init_struc_dirs(s_dirs *dirs);
         void    init_struc_flags(s_flags *flags);
         void    init_structs(s_vars *vars);
-
-    /*---------------------------Without arguments functions---------------------------*/
-        /*---------------------------Clear functions---------------------------*/
-            void    free_dirs(s_dirs *dirs);
-        /*---------------------------Print functions---------------------------*/
-            void    print_ls(s_vars *vars, bool print_dir_name);
-            void    print_ls_long_format(s_vars *vars);
-            void    print_info_long_format(s_arr *arr);
-            void    print_permissions(s_arr *arr);
-        /*---------------------------Sort functions---------------------------*/
-        void    without_args(s_vars *vars);
-    /*---------------------------With arguments functions---------------------------*/
-        /*---------------------------Clear functions---------------------------*/
-        /*---------------------------Print functions---------------------------*/
-        /*---------------------------Sort functions---------------------------*/
-            void    sort_by_name(s_vars *vars);
-            void    sort_by_time(s_vars *vars);
-            void    sort_files(s_vars *vars);
-
-        void    with_args(s_vars *vars, int ac, char **av);
-
+    /*---------------------------Clear functions---------------------------*/
+        void    free_dirs(s_dirs *dirs);
+    /*---------------------------Sort functions---------------------------*/
+        void    sort_by_name(s_vars *vars);
+        void    sort_by_time(s_vars *vars);
+        void    sort_files(s_vars *vars);
+    /*---------------------------Print functions---------------------------*/
+        void    print_ls(s_vars *vars, bool print_dir_name);
+        void    print_ls_long_format(s_vars *vars);
+        void    print_info_long_format(s_arr *arr);
+        void    print_permissions(s_arr *arr);
     /*---------------------------Utils Functions---------------------------*/
         bool    add_element(s_dirs *dirs, const char *str, unsigned char type);
         /*---------------------------Define Functions---------------------------*/
@@ -122,8 +111,14 @@
             void    define_link(s_arr *arr);
             void    define_nb_dir(s_vars *vars, int ac, char **av);
             void    define_owner(s_arr *arr);
+            void    define_subdirs(s_vars *vars, char *actual_dir);
         /*---------------------------Is Functions---------------------------*/
             bool    is_directory(const char *str);
             bool    is_file_exist(const char *str);
             bool    is_flag(const char *str);
             bool    is_there_directory(int ac, char **av);
+
+        /*---------------------------Main Functions---------------------------*/
+            void    recursive(s_vars *vars, char *directory);
+            void    with_args(s_vars *vars, int ac, char **av);
+            void    without_args(s_vars *vars);
