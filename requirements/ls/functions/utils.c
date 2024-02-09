@@ -95,29 +95,41 @@ void    define_file_date(s_arr *arr) {
     strftime(arr->date, sizeof(arr->date), "%b %e %H:%M", local_time);
 }
 
-void    define_file_permissions(s_arr *arr) {
+void define_file_permissions(s_arr *arr) {
     struct stat file_stat;
 
     if (stat(arr->path, &file_stat))
         return;
     
+    // Check if the file is executable by the user, group, or others
+    // If it is, set arr->executable to TRUE
     arr->executable = ((file_stat.st_mode & S_IXUSR) || (file_stat.st_mode & S_IXGRP) || (file_stat.st_mode & S_IXOTH));
 
+    // Check the user permissions for the file
+    // If the user has read, write, or execute permissions, set the corresponding index in arr->user_permissions to TRUE
     if (file_stat.st_mode & S_IRUSR) arr->user_permissions[0] |= TRUE;
     if (file_stat.st_mode & S_IWUSR) arr->user_permissions[1] |= TRUE;
     if (file_stat.st_mode & S_IXUSR) arr->user_permissions[2] |= TRUE;
 
+    // Check the group permissions for the file
+    // If the group has read, write, or execute permissions, set the corresponding index in arr->group_permissions to TRUE
     if (file_stat.st_mode & S_IRGRP) arr->group_permissions[0] |= TRUE;
     if (file_stat.st_mode & S_IWGRP) arr->group_permissions[1] |= TRUE;
     if (file_stat.st_mode & S_IXGRP) arr->group_permissions[2] |= TRUE;
 
+    // Check the permissions for others for the file
+    // If others have read, write, or execute permissions, set the corresponding index in arr->others_permissions to TRUE
     if (file_stat.st_mode & S_IROTH) arr->others_permissions[0] |= TRUE;
     if (file_stat.st_mode & S_IWOTH) arr->others_permissions[1] |= TRUE;
     if (file_stat.st_mode & S_IXOTH) arr->others_permissions[2] |= TRUE;
 
+    // The lstat function is similar to stat, but if the file is a symbolic link, it fetches the attributes of the link itself, not the file it points to
+    // If lstat returns a non-zero value, it means an error occurred, so we return from the function
     if (lstat(arr->path, &file_stat))
         return;
 
+    // Check if the file is a symbolic link
+    // If it is, set arr->type to 2
     if (S_ISLNK(file_stat.st_mode))
         arr->type = 2;
 }
