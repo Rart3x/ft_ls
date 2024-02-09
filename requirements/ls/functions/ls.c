@@ -14,7 +14,11 @@ void    with_args(s_vars *vars, int ac, char **av) {
             dir = opendir(".");
         else
             dir = opendir(av[i]);
-        if (dir && (is_file_exist(av[i]) || is_flag(av[i])))
+
+        while (is_flag(av[i]) && i < (size_t)ac)
+            i++;
+
+        if (dir && (is_file_exist(av[i])))
         {
             if (!is_there_directory(ac, av))
                 init_dirs(vars->dirs, ".");
@@ -87,6 +91,7 @@ void    without_args(s_vars *vars) {
 
     closedir(dir);
     free_dirs(vars->dirs);
+    free(vars->dirs);
 }
 
 int main(int ac, char **av) {

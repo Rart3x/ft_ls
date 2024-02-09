@@ -11,6 +11,9 @@ bool    is_directory(const char *str) {
 }
 
 bool    is_flag(const char *str) {
+    if (!str)
+        return FALSE;
+
     if (str[0] == '-' && (str[1] == 'a' || str[1] == 'l' || str[1] == 'R' || str[1] == 'r' || str[1] == 't' || str[1] == '1'))
         return TRUE;
     return FALSE;

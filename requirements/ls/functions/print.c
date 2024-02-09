@@ -40,6 +40,7 @@ void    print_ls(s_vars *vars, bool print_dir_name) {
     else {
         if (vars->nb_dir > 1)
             ft_printf("%s:\n", vars->dirs->directory);
+    
         for (size_t i = 0; i < vars->dirs->size; i++) {
             switch (vars->dirs->arr[i].type) {
                 case 4:
@@ -75,6 +76,9 @@ void    print_ls_long_format(s_vars *vars) {
     sort_files(vars);
 
     define_directory_blocks(vars);
+
+    if (vars->nb_dir > 1)
+        ft_printf("%s:\n", vars->dirs->directory);
 
     for (size_t i = 0; i < vars->dirs->size; i++) {
         switch (vars->dirs->arr[i].type) {
