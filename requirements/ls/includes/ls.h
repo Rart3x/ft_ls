@@ -40,7 +40,7 @@
         char    *str;
         char    *path;
 
-        size_t  blocks;
+        long    blocks;
 
         int     links;
         int     size;
@@ -51,7 +51,7 @@
         s_arr   *arr;
         char    *directory;
 
-        size_t  blocks;
+        long    blocks;
         size_t  capacity;
         size_t  size; 
 
@@ -94,7 +94,7 @@
         void    sort_files(s_vars *vars);
     /*---------------------------Print functions---------------------------*/
         void    print_ls(s_vars *vars, bool print_dir_name);
-        void    print_ls_long_format(s_vars *vars);
+        void    print_ls_long_format(s_vars *vars, bool print_dir_name);
         void    print_info_long_format(s_arr *arr);
         void    print_permissions(s_arr *arr);
     /*---------------------------Utils Functions---------------------------*/

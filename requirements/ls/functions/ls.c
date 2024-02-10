@@ -18,7 +18,10 @@ void    recursive(s_vars *vars, char *directory) {
                     return;
                 }
                 define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
-                print_ls(vars, TRUE);
+                if (!vars->flags.l)
+                    print_ls(vars, TRUE);
+                else
+                    print_ls_long_format(vars, TRUE);
                 tmp = true;
                 break;
             }
@@ -55,7 +58,7 @@ void    recursive(s_vars *vars, char *directory) {
             if (!vars->flags.l)
                 print_ls(vars, FALSE);
             else
-                print_ls_long_format(vars);
+                print_ls_long_format(vars, FALSE);
         }
     }
 }
@@ -78,7 +81,7 @@ void    with_args(s_vars *vars, int ac, char **av) {
 
         if (!is_there_directory(ac, av)) {
             dir = opendir(".");
-            directory = ft_strdup(".");
+            directory = ft_strdup(av[i]);
         }
         else {
             dir = opendir(av[i]);
@@ -98,14 +101,18 @@ void    with_args(s_vars *vars, int ac, char **av) {
             struct dirent *entry;
             while ((entry = readdir(dir)) != NULL) {
                 tmp = false;
-                if (is_file_exist(directory) && !is_directory(directory)) {
+                if (is_file_exist(entry->d_name) && !is_directory(entry->d_name)) {
                     if (!add_element(vars->dirs, directory, entry->d_type)) {
                         closedir(dir);
                         free_dirs(vars->dirs);
                         return;
                     }
                     define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
-                    print_ls(vars, TRUE);
+
+                    if (!vars->flags.l)
+                        print_ls(vars, TRUE);
+                    else
+                        print_ls_long_format(vars, TRUE);
                     tmp = true;
                     break;
                 }
@@ -132,7 +139,7 @@ void    with_args(s_vars *vars, int ac, char **av) {
                 if (!vars->flags.l)
                     print_ls(vars, FALSE);
                 else
-                    print_ls_long_format(vars);
+                    print_ls_long_format(vars, FALSE);
             }
 
             if (directory[0] != '.') {

@@ -33,9 +33,18 @@ void    define_directory_blocks(s_vars *vars) {
 
     for (size_t i = 0; i < vars->dirs->size; i++) {
         stat(vars->dirs->arr[i].str, &file_stat);
-        
-        vars->dirs->arr[i].blocks = file_stat.st_blocks;
-        vars->dirs->blocks += vars->dirs->arr[i].blocks;
+
+        // Size of the file system block (in bytes)
+        long bloc_size = file_stat.st_blksize;
+
+        // Size of the file in bytes
+        long file_size_bytes = file_stat.st_size;
+
+        // Size of the file in blocks
+        long file_size_blocks = (file_size_bytes + bloc_size - 1) / bloc_size;
+
+        vars->dirs->arr[i].blocks = file_size_blocks * 4;
+        vars->dirs->blocks += file_size_blocks * 4;
     }
 }
 
