@@ -62,6 +62,9 @@ size_t    define_flags(s_vars *vars, int ac, char **av) {
     for (size_t i = 1; i < (size_t)ac; i++) {
         if (av[i][0] == '-') {
             for (size_t j = 0; j < ft_strlen(av[i]); j++) { 
+                if (!is_flag(av[i]))
+                    return j + 1;
+
                 switch (av[i][j]) {
                     case 'a':
                         vars->flags.a = true;
@@ -78,8 +81,6 @@ size_t    define_flags(s_vars *vars, int ac, char **av) {
                     case 't':
                         vars->flags.t = true;
                         break;
-                    default:
-                        return j + 1;
                 }
             }
         }
