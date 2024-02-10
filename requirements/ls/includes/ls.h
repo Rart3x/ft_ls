@@ -99,6 +99,7 @@
         void    print_permissions(s_arr *arr);
     /*---------------------------Utils Functions---------------------------*/
         bool    add_element(s_dirs *dirs, const char *str, unsigned char type);
+        char    *str_to_lower(const char *str);
         /*---------------------------Define Functions---------------------------*/
             void    define_directory_blocks(s_vars *vars);
             void    define_errors(int ac, char **av);
@@ -116,6 +117,7 @@
             bool    is_directory(const char *str);
             bool    is_file_exist(const char *str);
             bool    is_flag(const char *str);
+            bool    is_sorted(s_vars *vars);
             bool    is_there_directory(int ac, char **av);
 
         /*---------------------------Main Functions---------------------------*/

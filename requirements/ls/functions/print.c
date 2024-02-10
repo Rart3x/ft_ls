@@ -73,7 +73,7 @@ void    print_ls(s_vars *vars, bool print_dir_name) {
 }
 
 void    print_ls_long_format(s_vars *vars) {
-    sort_files(vars);
+    // sort_files(vars);
 
     define_directory_blocks(vars);
 

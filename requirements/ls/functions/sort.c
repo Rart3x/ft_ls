@@ -10,11 +10,16 @@ void    sort_files(s_vars *vars) {
 void    sort_by_name(s_vars *vars) {
     for (size_t i = 0; i < vars->dirs->size; i++) {
         for (size_t j = i + 1; j < vars->dirs->size; j++) {
-            if (ft_strcmp(vars->dirs->arr[i].str, vars->dirs->arr[j].str) > 0) {
+            char *tmp1 = str_to_lower(vars->dirs->arr[i].str);
+            char *tmp2 = str_to_lower(vars->dirs->arr[j].str);
+
+            if (ft_strcmp(tmp1, tmp2) > 0) {
                 s_arr tmp = vars->dirs->arr[i];
                 vars->dirs->arr[i] = vars->dirs->arr[j];
                 vars->dirs->arr[j] = tmp;
             }
+            free(tmp1);
+            free(tmp2);
         }
     }
 }

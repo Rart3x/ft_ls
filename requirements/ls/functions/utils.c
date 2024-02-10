@@ -9,12 +9,18 @@ bool add_element(s_dirs *dirs, const char *str, unsigned char type) {
         
         dirs->capacity *= 2;
     }
+    char *path = NULL;
 
-    char *path = ft_strjoin(dirs->directory, "/");
+    if (dirs->directory[ft_strlen(dirs->directory) - 1] != '/') {
+        path = ft_strjoin(dirs->directory, "/");
+        dirs->arr[dirs->size].path = ft_strjoin(path, str);
+    }
+    else
+        dirs->arr[dirs->size].path = ft_strjoin(dirs->directory, str);
 
-    dirs->arr[dirs->size].path = ft_strjoin(path, str);
     dirs->arr[dirs->size].str = ft_strdup(str);
     dirs->arr[dirs->size].type = type;
+
     dirs->size++;
 
     free(path);
@@ -129,7 +135,6 @@ void define_file_permissions(s_arr *arr) {
         return;
 
     // Check if the file is a symbolic link
-    // If it is, set arr->type to 2
     if (S_ISLNK(file_stat.st_mode))
         arr->type = 2;
 }
@@ -202,4 +207,22 @@ void    define_subdirs(s_vars *vars, char *actual_dir) {
     }
     closedir(dir);
     (void)vars;
+}
+
+char    *str_to_lower(const char *str) {
+    size_t len = ft_strlen(str);
+    char *new_str = (char *)malloc(len + 1);
+
+    if (!new_str)
+        return NULL;
+
+    ft_strcpy(new_str, str);
+
+    for (size_t i = 0; i < len; i++) {
+        if (new_str[i] >= 'A' && new_str[i] <= 'Z') {
+            new_str[i] += 32;
+        }
+    }
+
+    return new_str;
 }
