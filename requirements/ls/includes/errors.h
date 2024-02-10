@@ -16,5 +16,9 @@
 
     #define ENOTDIR // name is not a directory.
 
+    #define INVALID_OPTION_FMT "ls: invalid option -- '%c'\nEnter « ls --help » for more information.\n" // Invalid option.
+    #define INVALID_OPTION(file) printf(INVALID_OPTION_FMT, (file)) // Invalid option.
+
 /*---------------------------Functions---------------------------*/
     void    err_cannot_access(char *err_message);
+    void    err_invalid_option(char *err_message);

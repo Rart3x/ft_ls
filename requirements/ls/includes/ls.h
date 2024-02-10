@@ -103,7 +103,7 @@
         /*---------------------------Define Functions---------------------------*/
             void    define_directory_blocks(s_vars *vars);
             void    define_errors(int ac, char **av);
-            void    define_flags(s_vars *vars, int ac, char **av);
+            size_t  define_flags(s_vars *vars, int ac, char **av);
             void    define_file_date(s_arr *arr);
             void    define_file_permissions(s_arr *arr);
             void    define_file_settings(s_arr *arr);
@@ -117,9 +117,7 @@
             bool    is_directory(const char *str);
             bool    is_file_exist(const char *str);
             bool    is_flag(const char *str);
-            bool    is_sorted(s_vars *vars);
             bool    is_there_directory(int ac, char **av);
-
         /*---------------------------Main Functions---------------------------*/
             void    recursive(s_vars *vars, char *directory);
             void    with_args(s_vars *vars, int ac, char **av);

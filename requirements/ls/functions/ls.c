@@ -61,11 +61,15 @@ void    recursive(s_vars *vars, char *directory) {
 }
 
 void    with_args(s_vars *vars, int ac, char **av) {
-    bool tmp = false;
-    DIR *dir;
+    bool    tmp = false;
+    DIR     *dir;
+    int     invalid_option;
 
     define_errors(ac, av);
-    define_flags(vars, ac, av);
+    if ((invalid_option = define_flags(vars, ac, av)) != -1) {
+        err_invalid_option(av[invalid_option]);
+        return;
+    }
     define_nb_dir(vars, ac, av);
 
     for (size_t i = 1; i < (size_t)ac; i++) {

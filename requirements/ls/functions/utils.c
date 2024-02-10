@@ -58,7 +58,7 @@ void    define_file_settings(s_arr *arr) {
     define_owner(arr);
 }
 
-void    define_flags(s_vars *vars, int ac, char **av) {
+size_t    define_flags(s_vars *vars, int ac, char **av) {
     for (size_t i = 1; i < (size_t)ac; i++) {
         if (av[i][0] == '-') {
             for (size_t j = 0; j < ft_strlen(av[i]); j++) { 
@@ -78,10 +78,13 @@ void    define_flags(s_vars *vars, int ac, char **av) {
                     case 't':
                         vars->flags.t = true;
                         break;
+                    default:
+                        return j + 1;
                 }
             }
         }
     }
+    return -1;
 }
 
 void    define_file_date(s_arr *arr) {

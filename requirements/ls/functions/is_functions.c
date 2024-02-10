@@ -27,15 +27,6 @@ bool    is_file_exist(const char *str) {
     return TRUE;
 }
 
-bool is_sorted(s_vars *vars) {
-    for (size_t i = 0; i < vars->dirs->size - 1; i++) {
-        if (ft_strcmp(vars->dirs->arr[i].str, vars->dirs->arr[i + 1].str) >  0) {
-            return false;
-        }
-    }
-    return true;
-}
-
 bool    is_there_directory(int ac, char **av) {
     for (size_t i = 1; i < (size_t)ac; i++) {
         DIR *dir = opendir(av[i]);
