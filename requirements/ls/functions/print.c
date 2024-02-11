@@ -38,11 +38,10 @@ void    print_ls(s_vars *vars, bool print_dir_name) {
         }
     }
     else {
-        printf("Total %ld\n", vars->dirs->blocks);
-
         if (vars->nb_dir > 1)
             ft_printf("%s:\n", vars->dirs->directory);
-    
+        if (vars->flags.l)
+            printf("total %ld\n", vars->dirs->blocks);
         for (size_t i = 0; i < vars->dirs->size; i++) {
             switch (vars->dirs->arr[i].type) {
                 case 4:
@@ -104,35 +103,35 @@ void    print_ls_long_format(s_vars *vars, bool print_dir_name) {
         }
     }
     else {
-        ft_printf("Total %d\n", vars->dirs->blocks);
-
         if (vars->nb_dir > 1)
-                ft_printf("%s:\n", vars->dirs->directory);
+            ft_printf("%s:\n", vars->dirs->directory);
+        if (vars->flags.l)
+            ft_printf("total %d\n", vars->dirs->blocks);
 
-            for (size_t i = 0; i < vars->dirs->size; i++) {
-                switch (vars->dirs->arr[i].type) {
-                    case 4:
-                        print_info_long_format(&vars->dirs->arr[i]);
-                        ft_printf(BLUE "%s\n" RESET, vars->dirs->arr[i].str);
-                        break;
-                    case 8:
-                        switch (vars->dirs->arr[i].executable) {
-                            case true:
-                                print_info_long_format(&vars->dirs->arr[i]);
-                                ft_printf(GREEN "%s\n" RESET, vars->dirs->arr[i].str);
-                                break;
-                            case false:
-                                print_info_long_format(&vars->dirs->arr[i]);
-                                ft_printf("%s\n", vars->dirs->arr[i].str);
-                                break;
-                        }
-                        break;
-                    default:
-                        print_info_long_format(&vars->dirs->arr[i]);
-                        ft_printf("%s\n", vars->dirs->arr[i].str);
-                        break;
-                }
+        for (size_t i = 0; i < vars->dirs->size; i++) {
+            switch (vars->dirs->arr[i].type) {
+                case 4:
+                    print_info_long_format(&vars->dirs->arr[i]);
+                    ft_printf(BLUE "%s\n" RESET, vars->dirs->arr[i].str);
+                    break;
+                case 8:
+                    switch (vars->dirs->arr[i].executable) {
+                        case true:
+                            print_info_long_format(&vars->dirs->arr[i]);
+                            ft_printf(GREEN "%s\n" RESET, vars->dirs->arr[i].str);
+                            break;
+                        case false:
+                            print_info_long_format(&vars->dirs->arr[i]);
+                            ft_printf("%s\n", vars->dirs->arr[i].str);
+                            break;
+                    }
+                    break;
+                default:
+                    print_info_long_format(&vars->dirs->arr[i]);
+                    ft_printf("%s\n", vars->dirs->arr[i].str);
+                    break;
             }
+        }
     }
     vars->current_dir++;
 }
