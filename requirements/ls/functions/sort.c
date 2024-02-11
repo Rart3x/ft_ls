@@ -10,7 +10,7 @@ void    sort_files(s_vars *vars) {
         reverse_sort(vars);
 }
 
-void    reverse_sort(s_vars *vars) {
+void reverse_sort(s_vars *vars) {
     size_t start = 0;
     size_t end = vars->dirs->size - 1;
 
@@ -47,10 +47,10 @@ void    sort_by_time(s_vars *vars) {
             struct stat file_stat_1;
             struct stat file_stat_2;
 
-            stat(vars->dirs->arr[i].str, &file_stat_1);
-            stat(vars->dirs->arr[j].str, &file_stat_2);
+            stat(vars->dirs->arr[i].path, &file_stat_1);
+            stat(vars->dirs->arr[j].path, &file_stat_2);
 
-            if (file_stat_1.st_mtime < file_stat_2.st_mtime) {
+            if (file_stat_1.st_ctime < file_stat_2.st_ctime) {
                 s_arr tmp = vars->dirs->arr[i];
                 vars->dirs->arr[i] = vars->dirs->arr[j];
                 vars->dirs->arr[j] = tmp;
