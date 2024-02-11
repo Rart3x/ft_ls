@@ -89,6 +89,7 @@
     /*---------------------------Clear functions---------------------------*/
         void    free_dirs(s_dirs *dirs);
     /*---------------------------Sort functions---------------------------*/
+        void    reverse_sort(s_vars *vars);
         void    sort_by_name(s_vars *vars);
         void    sort_by_time(s_vars *vars);
         void    sort_files(s_vars *vars);

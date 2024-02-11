@@ -5,6 +5,23 @@ void    sort_files(s_vars *vars) {
         sort_by_time(vars);
     else
         sort_by_name(vars);
+
+    if (vars->flags.r)
+        reverse_sort(vars);
+}
+
+void    reverse_sort(s_vars *vars) {
+    size_t start = 0;
+    size_t end = vars->dirs->size - 1;
+
+    while (start < end) {
+        s_arr tmp = vars->dirs->arr[start];
+        vars->dirs->arr[start] = vars->dirs->arr[end];
+        vars->dirs->arr[end] = tmp;
+
+        start++;
+        end--;
+    }
 }
 
 void    sort_by_name(s_vars *vars) {

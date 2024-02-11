@@ -45,7 +45,10 @@ void    recursive(s_vars *vars, char *directory) {
             char *full_path; 
 
             if (vars->dirs->directory[0] != '.') {
-                path = ft_strjoin(vars->dirs->directory, "/");
+                if (directory[ft_strlen(directory) - 1] != '/')
+                    path = ft_strjoin(directory, "/");
+                else
+                    path = ft_strdup(directory);
                 full_path = ft_strjoin(path, entry->d_name);
 
                 if (is_directory(full_path) && entry->d_name[0] != '.')
@@ -54,6 +57,7 @@ void    recursive(s_vars *vars, char *directory) {
                 free(full_path);
             }
         }
+
         if (!tmp) {
             if (!vars->flags.l)
                 print_ls(vars, FALSE);
@@ -96,7 +100,7 @@ void    with_args(s_vars *vars, int ac, char **av) {
 
         // printf("DIRECTORY: %s\n", directory);
 
-        if (dir && is_file_exist(directory))
+        if (dir && (is_file_exist(directory)))
         {
             if (!is_there_directory(ac, av))
                 init_dirs(vars->dirs, ".");
@@ -148,7 +152,10 @@ void    with_args(s_vars *vars, int ac, char **av) {
             }
 
             if (directory[0] != '.') {
-                path = ft_strjoin(directory, "/");
+                if (directory[ft_strlen(directory) - 1] != '/')
+                    path = ft_strjoin(directory, "/");
+                else
+                    path = ft_strdup(directory);
 
                 if (is_directory(path) && path[0] != '.' && vars->flags.R)
                     define_subdirs(vars, path);
