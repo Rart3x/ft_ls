@@ -85,7 +85,7 @@ void    with_args(s_vars *vars, int ac, char **av) {
 
         if (!is_there_directory(ac, av)) {
             dir = opendir(".");
-            directory = ft_strdup(av[i]);
+            directory = ft_strdup(".");
         }
         else {
             dir = opendir(av[i]);
@@ -110,7 +110,7 @@ void    with_args(s_vars *vars, int ac, char **av) {
             struct dirent *entry;
             while ((entry = readdir(dir)) != NULL) {
                 tmp = false;
-                if (is_file_exist(entry->d_name) && !is_directory(entry->d_name)) {
+                if (is_file_exist(entry->d_name) && !is_directory(entry->d_name) && ft_strcmp(directory, ".")) {
                     if (!add_element(vars->dirs, directory, entry->d_type)) {
                         closedir(dir);
                         free_dirs(vars->dirs);
