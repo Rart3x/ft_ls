@@ -214,3 +214,10 @@ void    print_info_long_format(s_arr *arr) {
     ft_printf("%d ", arr->size);
     ft_printf("%s ", arr->date);
 }
+
+void    print_according_to_flags(s_vars *vars, bool boolean) {
+    if (vars->flags.l)
+        print_ls_long_format(vars, boolean);
+    else
+        print_ls(vars, boolean);
+}

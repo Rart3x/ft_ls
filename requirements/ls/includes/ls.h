@@ -78,48 +78,51 @@
     }   s_vars;
 
 /*---------------------------Functions---------------------------*/
-
+    /*---------------------------Clear functions---------------------------*/
+        void    close_and_free(DIR *dir, s_dirs *dirs, char *directory);
+        void    free_dirs(s_dirs *dirs);
+    /*---------------------------Define Functions---------------------------*/
+        void    define_directory_blocks(s_vars *vars);
+        void    define_errors(int ac, char **av);
+        size_t  define_flags(s_vars *vars, int ac, char **av);
+        void    define_file_date(s_arr *arr);
+        void    define_file_permissions(s_arr *arr);
+        void    define_file_settings(s_arr *arr);
+        void    define_file_size(s_arr *arr);
+        void    define_group(s_arr *arr);
+        void    define_link(s_arr *arr);
+        void    define_nb_dir(s_vars *vars, int ac, char **av);
+        void    define_owner(s_arr *arr);
+        void    define_subdirs(s_vars *vars, char *actual_dir);
     /*---------------------------Init Functions---------------------------*/
         void    init_dirs(s_dirs *dirs, const char *directory);
+        void    init_dirs_according_to_directorys(s_vars *vars, int ac, char **av, char *directory);
 
         void    init_struc_arr(s_arr *arr);
         void    init_struc_dirs(s_dirs *dirs);
         void    init_struc_flags(s_flags *flags);
         void    init_structs(s_vars *vars);
-    /*---------------------------Clear functions---------------------------*/
-        void    free_dirs(s_dirs *dirs);
+    /*---------------------------Is Functions---------------------------*/
+        bool    is_directory(const char *str);
+        bool    is_file_exist(const char *str);
+        bool    is_flag(const char *str);
+        bool    is_in_arg(int ac, char **av, char *arg);
+        bool    is_there_directory(int ac, char **av);
+    /*---------------------------Main Functions---------------------------*/
+        void    recursive(s_vars *vars, char *directory);
+        void    with_args(s_vars *vars, int ac, char **av);
+        void    without_args(s_vars *vars);
+    /*---------------------------Print functions---------------------------*/
+        void    print_according_to_flags(s_vars *vars, bool boolean);
+        void    print_ls(s_vars *vars, bool print_dir_name);
+        void    print_ls_long_format(s_vars *vars, bool print_dir_name);
+        void    print_info_long_format(s_arr *arr);
+        void    print_permissions(s_arr *arr);
     /*---------------------------Sort functions---------------------------*/
         void    reverse_sort(s_vars *vars);
         void    sort_by_name(s_vars *vars);
         void    sort_by_time(s_vars *vars);
         void    sort_files(s_vars *vars);
-    /*---------------------------Print functions---------------------------*/
-        void    print_ls(s_vars *vars, bool print_dir_name);
-        void    print_ls_long_format(s_vars *vars, bool print_dir_name);
-        void    print_info_long_format(s_arr *arr);
-        void    print_permissions(s_arr *arr);
     /*---------------------------Utils Functions---------------------------*/
         bool    add_element(s_dirs *dirs, const char *str, unsigned char type);
         char    *str_to_lower(const char *str);
-        /*---------------------------Define Functions---------------------------*/
-            void    define_directory_blocks(s_vars *vars);
-            void    define_errors(int ac, char **av);
-            size_t  define_flags(s_vars *vars, int ac, char **av);
-            void    define_file_date(s_arr *arr);
-            void    define_file_permissions(s_arr *arr);
-            void    define_file_settings(s_arr *arr);
-            void    define_file_size(s_arr *arr);
-            void    define_group(s_arr *arr);
-            void    define_link(s_arr *arr);
-            void    define_nb_dir(s_vars *vars, int ac, char **av);
-            void    define_owner(s_arr *arr);
-            void    define_subdirs(s_vars *vars, char *actual_dir);
-        /*---------------------------Is Functions---------------------------*/
-            bool    is_directory(const char *str);
-            bool    is_file_exist(const char *str);
-            bool    is_flag(const char *str);
-            bool    is_there_directory(int ac, char **av);
-        /*---------------------------Main Functions---------------------------*/
-            void    recursive(s_vars *vars, char *directory);
-            void    with_args(s_vars *vars, int ac, char **av);
-            void    without_args(s_vars *vars);

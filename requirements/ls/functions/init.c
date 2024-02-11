@@ -1,6 +1,13 @@
 #include "../includes/ls.h"
 
 /*---------------------------Random Init---------------------------*/
+void    init_dirs_according_to_directorys(s_vars *vars, int ac, char **av, char *directory) {
+    if (!is_there_directory(ac, av))
+        init_dirs(vars->dirs, ".");
+    else
+        init_dirs(vars->dirs, directory);
+}
+
 void   init_dirs(s_dirs *dirs, const char *directory) {
     if (dirs != NULL) {
         if (!dirs->arr)

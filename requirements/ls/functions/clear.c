@@ -1,6 +1,14 @@
 #include "../includes/ls.h"
 
-void free_dirs(s_dirs *dirs) {
+void    close_and_free(DIR *dir, s_dirs *dirs, char *directory) {
+    closedir(dir);
+    free_dirs(dirs);
+
+    if (directory)
+        free(directory);
+}
+
+void    free_dirs(s_dirs *dirs) {
     while (dirs) {
         s_dirs *next = dirs->next;
 

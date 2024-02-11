@@ -12,37 +12,27 @@ void    recursive(s_vars *vars, char *directory) {
         while ((entry = readdir(dir)) != NULL) {
             tmp = false;
             if (is_file_exist(directory) && !is_directory(directory)) {
-                if (!add_element(vars->dirs, directory, entry->d_type)) {
-                    closedir(dir);
-                    free_dirs(vars->dirs);
-                    return;
-                }
+                if (!add_element(vars->dirs, directory, entry->d_type))
+                    return (close_and_free(dir, vars->dirs, NULL));
+                
                 define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
-                if (!vars->flags.l)
-                    print_ls(vars, TRUE);
-                else
-                    print_ls_long_format(vars, TRUE);
+                print_according_to_flags(vars, TRUE);
+
                 tmp = true;
                 break;
             }
             else if (!vars->flags.a && entry->d_name[0] != '.') {
-                if (!add_element(vars->dirs, entry->d_name, entry->d_type)) {
-                    closedir(dir);
-                    free_dirs(vars->dirs);
-                    return;
-                }
+                if (!add_element(vars->dirs, entry->d_name, entry->d_type))
+                    return (close_and_free(dir, vars->dirs, NULL));
                 define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
             }
             else if (vars->flags.a) {
-                if (!add_element(vars->dirs, entry->d_name, entry->d_type)) {
-                    closedir(dir);
-                    free_dirs(vars->dirs);
-                    return;
-                }
+                if (!add_element(vars->dirs, entry->d_name, entry->d_type))
+                    return (close_and_free(dir, vars->dirs, NULL));
                 define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
             }
-            char *path;
             char *full_path; 
+            char *path;
 
             if (vars->dirs->directory[0] != '.') {
                 if (directory[ft_strlen(directory) - 1] != '/')
@@ -58,12 +48,8 @@ void    recursive(s_vars *vars, char *directory) {
             }
         }
 
-        if (!tmp) {
-            if (!vars->flags.l)
-                print_ls(vars, FALSE);
-            else
-                print_ls_long_format(vars, FALSE);
-        }
+        if (!tmp)
+            print_according_to_flags(vars, FALSE);
     }
 }
 
@@ -73,14 +59,12 @@ void    with_args(s_vars *vars, int ac, char **av) {
     int     invalid_option;
 
     define_errors(ac, av);
-    if ((invalid_option = define_flags(vars, ac, av)) != -1) {
-        err_invalid_option(av[invalid_option]);
-        return;
-    }
     define_nb_dir(vars, ac, av);
 
+    if ((invalid_option = define_flags(vars, ac, av)) != -1)
+        return (err_invalid_option(av[invalid_option]));
+
     for (size_t i = 1; i < (size_t)ac; i++) {
-        
         char *directory;
 
         if (!is_there_directory(ac, av)) {
@@ -95,61 +79,38 @@ void    with_args(s_vars *vars, int ac, char **av) {
         while (is_flag(directory) && i < (size_t)ac)
             i++;
 
-        // if (dir)
-        //     printf("OPENED\n");
-
-        // printf("DIRECTORY: %s\n", directory);
-
         if (dir && (is_file_exist(directory)))
         {
-            if (!is_there_directory(ac, av))
-                init_dirs(vars->dirs, ".");
-            else
-                init_dirs(vars->dirs, directory);
+            init_dirs_according_to_directorys(vars, ac, av, directory);
 
             struct dirent *entry;
             while ((entry = readdir(dir)) != NULL) {
                 tmp = false;
-                if (is_file_exist(entry->d_name) && !is_directory(entry->d_name) && ft_strcmp(directory, ".")) {
-                    if (!add_element(vars->dirs, directory, entry->d_type)) {
-                        closedir(dir);
-                        free_dirs(vars->dirs);
-                        return;
-                    }
-                    define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
+                if (is_file_exist(entry->d_name) && !is_directory(entry->d_name)) {
+                    if (!add_element(vars->dirs, entry->d_name, entry->d_type))
+                        return (close_and_free(dir, vars->dirs, NULL));
 
-                    if (!vars->flags.l)
-                        print_ls(vars, TRUE);
-                    else
-                        print_ls_long_format(vars, TRUE);
+                    define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
+                    print_according_to_flags(vars, TRUE);
+
                     tmp = true;
                     break;
                 }
                 else if (!vars->flags.a && entry->d_name[0] != '.') {
-                    if (!add_element(vars->dirs, entry->d_name, entry->d_type)) {
-                        closedir(dir);
-                        free_dirs(vars->dirs);
-                        return;
-                    }
+                    if (!add_element(vars->dirs, entry->d_name, entry->d_type))
+                        return (close_and_free(dir, vars->dirs, NULL));
                     define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
                 }
                 else if (vars->flags.a) {
-                    if (!add_element(vars->dirs, entry->d_name, entry->d_type)) {
-                        closedir(dir);
-                        free_dirs(vars->dirs);
-                        return;
-                    }
+                    if (!add_element(vars->dirs, entry->d_name, entry->d_type))
+                        return (close_and_free(dir, vars->dirs, NULL));
                     define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
                 }
             }
             char *path;
 
-            if (!tmp) {
-                if (!vars->flags.l)
-                    print_ls(vars, FALSE);
-                else
-                    print_ls_long_format(vars, FALSE);
-            }
+            if (!tmp)
+                print_according_to_flags(vars, FALSE);
 
             if (directory[0] != '.') {
                 if (directory[ft_strlen(directory) - 1] != '/')
@@ -162,9 +123,7 @@ void    with_args(s_vars *vars, int ac, char **av) {
                 free(path);
             }
         }
-        closedir(dir);
-        free_dirs(vars->dirs);
-        free(directory);
+        close_and_free(dir, vars->dirs, directory);
     }
 }
 
@@ -178,18 +137,13 @@ void    without_args(s_vars *vars) {
     struct dirent *entry;
     while ((entry = readdir(dir)) != NULL) {
         if (entry->d_name[0] != '.') {
-            if (!add_element(vars->dirs, entry->d_name, entry->d_type)) {
-                closedir(dir);
-                free_dirs(vars->dirs);
-                return;
-            }
+            if (!add_element(vars->dirs, entry->d_name, entry->d_type))
+                return (close_and_free(dir, vars->dirs, NULL));
             define_file_settings(&vars->dirs->arr[vars->dirs->size - 1]);
         }
     }
     print_ls(vars, FALSE);
-
-    closedir(dir);
-    free_dirs(vars->dirs);
+    close_and_free(dir, vars->dirs, NULL);
 }
 
 int main(int ac, char **av) {

@@ -27,6 +27,15 @@ bool    is_file_exist(const char *str) {
     return TRUE;
 }
 
+bool    is_in_arg(int ac, char **av, char *arg) {
+    for (size_t i = 1; i < (size_t)ac; i++) {
+        if (!ft_strcmp(av[i], arg))
+            return TRUE;
+    }
+    return FALSE;
+
+}
+
 bool    is_there_directory(int ac, char **av) {
     for (size_t i = 1; i < (size_t)ac; i++) {
         DIR *dir = opendir(av[i]);
