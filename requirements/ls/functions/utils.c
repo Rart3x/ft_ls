@@ -32,7 +32,7 @@ void    define_directory_blocks(s_vars *vars) {
     struct stat file_stat;
 
     for (size_t i = 0; i < vars->dirs->size; i++) {
-        stat(vars->dirs->arr[i].str, &file_stat);
+        stat(vars->dirs->arr[i].path, &file_stat);
 
         // Size of the file system block (in bytes)
         long bloc_size = file_stat.st_blksize;
@@ -119,6 +119,12 @@ void define_file_permissions(s_arr *arr) {
 
     if (stat(arr->path, &file_stat))
         return;
+
+    for (size_t i = 0; i < 3; i++) {
+        arr->user_permissions[i] = false;
+        arr->group_permissions[i] = false;
+        arr->others_permissions[i] = false;
+    }
     
     // Check if the file is executable by the user, group, or others
     // If it is, set arr->executable to TRUE
@@ -213,7 +219,6 @@ void    define_subdirs(s_vars *vars, char *actual_dir) {
                     define_subdirs(vars, full_path);
                     closedir(subdir);
                 }
-
                 free(full_path);
             }
         }

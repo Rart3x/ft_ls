@@ -106,7 +106,7 @@ void    print_ls_long_format(s_vars *vars, bool print_dir_name) {
         if (vars->nb_dir > 1)
             ft_printf("%s:\n", vars->dirs->directory);
         if (vars->flags.l)
-            ft_printf("total %d\n", vars->dirs->blocks);
+            printf("total %ld\n", vars->dirs->blocks);
 
         for (size_t i = 0; i < vars->dirs->size; i++) {
             switch (vars->dirs->arr[i].type) {

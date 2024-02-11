@@ -91,6 +91,11 @@ void    with_args(s_vars *vars, int ac, char **av) {
         while (is_flag(directory) && i < (size_t)ac)
             i++;
 
+        // if (dir)
+        //     printf("OPENED\n");
+
+        // printf("DIRECTORY: %s\n", directory);
+
         if (dir && is_file_exist(directory))
         {
             if (!is_there_directory(ac, av))

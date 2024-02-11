@@ -8,6 +8,7 @@ void   init_dirs(s_dirs *dirs, const char *directory) {
 
         if (dirs->arr != NULL) {
             init_struc_arr(dirs->arr);
+            dirs->blocks = 0;
             dirs->capacity = 1;
             dirs->next = NULL;
             dirs->size = 0;
@@ -34,8 +35,8 @@ void    init_structs(s_vars *vars) {
     vars->current_dir = 0;
     vars->nb_dir = 0;
 
-    vars->dirs->next = NULL;
     vars->dirs->arr = NULL;
+    vars->dirs->next = NULL;
 
     init_struc_dirs(vars->dirs);
     init_struc_flags(&vars->flags);
@@ -44,22 +45,16 @@ void    init_structs(s_vars *vars) {
 void    init_struc_arr(s_arr *arr) {
     arr->group = NULL;
     arr->owner = NULL;
-    arr->str = NULL;
     arr->path = NULL;
+    arr->str = NULL;
 
     arr->executable = false;
     arr->readable = false;
     arr->writable = false;
 
-    for (size_t i = 0; i < 3; i++) {
-        arr->user_permissions[i] = false;
-        arr->group_permissions[i] = false;
-        arr->others_permissions[i] = false;
-    }
-
     arr->blocks = 0;
-    arr->type = 0;
     arr->size = 0;
+    arr->type = 0;
 }
 
 void    init_struc_dirs(s_dirs *dirs) {
